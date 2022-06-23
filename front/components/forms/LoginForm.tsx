@@ -7,6 +7,7 @@ import { signIn } from 'next-auth/react';
 export const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    // @TODO: handle errors and loading
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -29,8 +30,8 @@ export const LoginForm = () => {
             <h2> Welcome to the best healthcare app!</h2>
             <h5 className='text-gray-700'> Log in to access unique features</h5>
             <div className="flex flex-col w-3/12 mb-6">
-                <InputForm value={email} text="Email" placeholder='mail@example.com' handleChange={handleChangeEmail}></InputForm>
-                <InputForm value={password} text="Password" placeholder='*******' handleChange={handleChangePassword}></InputForm>
+                <InputForm value={email} text="Email" type="email" placeholder='mail@example.com' handleChange={handleChangeEmail}></InputForm>
+                <InputForm value={password} text="Password" type="password" placeholder='*******' handleChange={handleChangePassword}></InputForm>
                 
                 <button type="button" onClick={onLoginUser} className="disabled:bg-white mt-5 h-10 rounded-xl bg-blue-500 text-white "> 
                     <p>Login</p>
