@@ -24,11 +24,13 @@ export default NextAuth({
                     email: credentials?.email,
                     password: credentials?.password,
                 }).then((response) => {
+                    console.log("NO hubo ningun error.")
                     let token = response.data.token
                     let role = response.data.role
                     let info = response.data.data
                     user = {token, role, ...info}
                 }).catch((error) => {
+                    console.log("HAY UN ERROR.")
                     console.log(error);
                 });
                 return user; 

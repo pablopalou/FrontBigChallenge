@@ -17,7 +17,6 @@ interface Props {
 
 export const Button = ({handle, text}:Props) => {
     let logo = text.replace(/\s/g, '').toLowerCase();
-    console.log(logo);
     return (
         <button className="p-2 m-2 w-11/12 text-lg rounded-lg text-white font-bold bg-gray-700 flex items-center" type="button" onClick={() => handle()}>
             <img
