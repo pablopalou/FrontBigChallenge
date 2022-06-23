@@ -1,7 +1,7 @@
 import { Layout } from '../components/layouts'
 
 const HomePage = () => (
-  <Layout />
+    <Layout />
 )
 
 export default HomePage

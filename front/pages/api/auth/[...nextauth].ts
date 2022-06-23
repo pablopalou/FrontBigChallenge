@@ -59,5 +59,7 @@ export default NextAuth({
             session.user = token.user as any;
             return session;
         }
-    }
+    },
+
+    secret: process.env.JWT_SECRET,
 });
