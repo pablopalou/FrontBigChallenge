@@ -2,24 +2,25 @@ import Router from 'next/router'
 import React, { ReactNode } from 'react'
 import {Button} from '../Button'
 import {useRouter} from 'next/router'
+import * as routes from '../routes'
 
 export const AuthSideBar = () => {
     const router = useRouter();
 
     const handleHome = () => {
-        router.push(`/`);
+        router.push(routes.home);
     }
 
     const handleTaskHistory = () => {
-        router.push(`/submission?role=doctor`);
+        router.push(routes.taskHistory);
     }
 
     const handleNewSubmission = () => {
-        router.push(`/submission/create`);
+        router.push(routes.newSubmission);
     }
 
     const handleAllSubmissions = () => {
-        router.push(`/submission/all`);
+        router.push(routes.allSubmissions);
     }
 
     let taskHistory = <></>
