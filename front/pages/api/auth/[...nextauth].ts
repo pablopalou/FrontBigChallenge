@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'https://localhost/api',
+    baseURL: 'http://localhost/api',
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

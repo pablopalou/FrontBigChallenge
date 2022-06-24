@@ -24,7 +24,8 @@ export const RegisterForm = () => {
 
     // how can i put the callbackUrl: 'http://localhost:3000'?
     const onRegisterUser = async() => {
-        // await signIn('credentials',{ email, password });
+        var x = await signIn('credentials',{ email, password });
+        console.log(x);
     }
 
     return(
