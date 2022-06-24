@@ -26,14 +26,14 @@ export const AuthSideBar = () => {
     let taskHistory = <></>
     let allSubmissions = <></>
     // if (doctor ){
-    taskHistory = <Button handle={handleTaskHistory} text="Task History"/>
-    allSubmissions = <Button handle={handleAllSubmissions} text="All Submissions"/>
+    taskHistory = <Button handle={handleTaskHistory} text="Task History" route="taskhistory.svg" />
+    allSubmissions = <Button handle={handleAllSubmissions} text="All Submissions" route="allsubmissions.svg"/>
     // }
 
     return (
         <>
-            <Button handle={handleHome} text="Home"/>
-            <Button handle={handleNewSubmission} text="New Submission"/>
+            <Button handle={handleHome} text="Home" route="home.svg"/>
+            <Button handle={handleNewSubmission} text="New Submission" route="newsubmission.svg"/>
             {allSubmissions}
             {taskHistory}
             <div className='bg-gray-700 flex w-full h-14 items-center content-end absolute inset-x-0 bottom-0'>
