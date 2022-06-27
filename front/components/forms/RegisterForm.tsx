@@ -5,9 +5,11 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { instance } from '../../api';
 import { useRouter } from 'next/router';
+import { Loading } from '@nextui-org/react';
 
 export const RegisterForm = () => {
     const router = useRouter();
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -46,14 +48,17 @@ export const RegisterForm = () => {
     console.log(role);
 
     const onRegisterUser = async () => {
+        setLoading(true);
         instance.post('/register', {name, email, password, password_confirmation, height, weight, role, gender, birth, diseases, previous_treatments, grade, speciality}).then(
             (response)=> {
                 setError(false);
                 setErrorMessage('');
+                setLoading(false);
                 router.replace('/login');
             }
         ).catch(
             (error)=> {
+                setLoading(false);
                 setError(true);
                 setErrorMessage(error.response.data.message);
                 console.log(error.response.data);
@@ -152,9 +157,10 @@ export const RegisterForm = () => {
                     <h4 className='text-red-500'>{errorMessage}</h4>
                 </div>
             }
-            <button type="button" onClick={onRegisterUser} className="disabled:bg-white mt-5 h-10 rounded-xl bg-blue-500 text-white w-1/2 mb-8"> 
-                <p>Sign up</p>
+            <button disabled={loading} title='signupButton' type="button" onClick={onRegisterUser} className="disabled:bg-white mt-5 h-10 rounded-xl bg-blue-500 text-white w-1/2 mb-8"> 
+                <p hidden={loading}>Sign up</p>
             </button>
+            {loading && <Loading></Loading>}
             <p>
                 Already have an account yet?  
                 <Link href="/login" passHref><a className="text-blue-500 hover:text-blue-800"> Log in</a></Link>
