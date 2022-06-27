@@ -20,7 +20,7 @@ export default NextAuth({
             },
             async authorize(credentials){
                 let user = null;
-                await instance.post('/login',{
+                let response = await instance.post('/login',{
                     email: credentials?.email,
                     password: credentials?.password,
                 }).then((response) => {
@@ -31,7 +31,7 @@ export default NextAuth({
                     user = {token, role, ...info}
                 }).catch((error) => {
                     console.log("HAY UN ERROR.")
-                    console.log(error); //podria poner este error en el otro lado
+                    console.log(error);
                 });
                 return user; 
             }

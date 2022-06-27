@@ -11,13 +11,7 @@ export const LoginForm = () => {
     const [password, setPassword] = useState("");
     // @TODO: handle errors and loading
     const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [loading, setLoading] = useState(false);
     const router = useRouter();
-
-    console.log('aaaaaaaaaaaaaaaaa');
-    console.log(router.asPath);
-    console.log('aaaaaaaaaaaaaaaa');
 
     useEffect(() => {
         setError(router.asPath.includes('error'))
@@ -32,20 +26,14 @@ export const LoginForm = () => {
     }
 
     const onLoginUser = async() => {
-        try {
-
-        } catch {
-            
-        }
         var response = await signIn('credentials',{ email, password });
-        console.log(response);
     }
 
     return(
         <div className="w-full h-screen flex flex-col items-center mt-16">
             <h2> Welcome to the best healthcare app!</h2>
             <h5 className='text-gray-700'> Log in to access unique features</h5>
-            {error && <h1>error</h1>}
+            {error && <h2 className='text-red-500'>Log in failed. Try again.</h2>}
             <div className="flex flex-col w-3/12 mb-6">
                 <InputForm value={email} text="Email" type="email" placeholder='mail@example.com' handleChange={handleChangeEmail}></InputForm>
                 <InputForm value={password} text="Password" type="password" placeholder='*******' handleChange={handleChangePassword}></InputForm>

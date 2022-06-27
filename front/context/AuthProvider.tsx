@@ -1,8 +1,9 @@
 import {FC, useReducer, useEffect, useState} from 'react';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import axios from 'axios';
 import {AuthContext} from './AuthContext'
+import * as routes from '../components/routes'
 
 export interface AuthState {
     isLoggedIn: boolean;
@@ -45,7 +46,8 @@ export const AuthProvider:FC<Props> = ({ children }) => {
             isLoggedIn: false,
             user: undefined,
             role: "undefined",
-        })
+        });
+        // Router.push(routes.login);
     }
 
 

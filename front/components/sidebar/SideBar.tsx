@@ -16,6 +16,6 @@ export const SideBar = () => {
         console.log("no hay nadie");
     }
     return (
-        <AuthSideBar></AuthSideBar>
+        sidebar
     );
 }
