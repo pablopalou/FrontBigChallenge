@@ -4,25 +4,28 @@ import { InputForm } from './InputForm'
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { instance } from '../../api';
+import { useRouter } from 'next/router';
 
 export const RegisterForm = () => {
+    const router = useRouter();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordConfirmation, setPasswordConfirmation] = useState('');
+    const [password_confirmation, setPasswordConfirmation] = useState('');
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
 
-    const [gender, setGender] = useState('');
+    const [gender, setGender] = useState('male');
     const [role, setRole] = useState('');
     const [birth, setBirth] = useState('');
     const [diseases, setDiseases] = useState('');
-    const [previousTreatments, setPreviousTreatments] = useState('');
+    const [previous_treatments, setPreviousTreatments] = useState('');
     const [grade, setGrade] = useState(1);
     const [speciality, setSpeciality] = useState('general');
     // const [isDoctor, setIsDoctor] = useState(false);
 
     const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleChangeName = (event:any) => {setName(event.target.value);}
@@ -32,25 +35,30 @@ export const RegisterForm = () => {
     const handleChangeHeight = (event:any) => {setHeight(event.target.value);}
     const handleChangeWeight = (event:any) => {setWeight(event.target.value);}
 
-    const handleChangeGender = (event:any) => {console.log(event.target.value) ;setRole(event.target.value); console.log(gender);}
-    const handleChangeRole = (event:any) => {
-        console.log(event.target.value) ;
-        setRole(event.target.value);
-        console.log(role); 
-        // setIsDoctor((prev) => !prev);
-        // console.log(isDoctor);
-    }
-    const handleChangeBirth = (event:any) => {setBirth(event.target.value); console.log(birth);}
-    const handleChangeDiseases = (event:any) => {setDiseases(event.target.value); console.log(diseases);}
-    const handleChangePreviousTreatments = (event:any) => {setPreviousTreatments(event.target.value); console.log(previousTreatments)}
-    const handleChangeGrade = (event:any) => {setGrade(event.target.value); console.log(grade);}
-    const handleChangeSpeciality = (event:any) => {setSpeciality(event.target.value); console.log(speciality)}
+    const handleChangeGender = (event:any) => {setGender(event.target.value)}
+    const handleChangeRole = (event:any) => {setRole(event.target.value);}
+    const handleChangeBirth = (event:any) => {setBirth(event.target.value); }
+    const handleChangeDiseases = (event:any) => {setDiseases(event.target.value); }
+    const handleChangePreviousTreatments = (event:any) => {setPreviousTreatments(event.target.value); }
+    const handleChangeGrade = (event:any) => {setGrade(event.target.value); }
+    const handleChangeSpeciality = (event:any) => {setSpeciality(event.target.value); }
 
-    // how can i put the callbackUrl: 'http://localhost:3000'?
+    console.log(role);
+
     const onRegisterUser = async () => {
-        console.log("entro  a registrar");
-        instance.post('/register', {name, email, password, passwordConfirmation, height, weight, gender, birth, diseases, previousTreatments, grade, speciality})
-        // var x = await signIn('credentials',{ email, password });
+        instance.post('/register', {name, email, password, password_confirmation, height, weight, role, gender, birth, diseases, previous_treatments, grade, speciality}).then(
+            (response)=> {
+                setError(false);
+                setErrorMessage('');
+                router.replace('/login');
+            }
+        ).catch(
+            (error)=> {
+                setError(true);
+                setErrorMessage(error.response.data.message);
+                console.log(error.response.data);
+            }
+        )
     }
 
     return(
@@ -64,7 +72,7 @@ export const RegisterForm = () => {
                 </div>
                 <div className='flex flex-col w-full'>
                     <InputForm value={email} text="Email" type="email" placeholder='mail@example.com' handleChange={handleChangeEmail}></InputForm>
-                    <InputForm value={passwordConfirmation} text="Password confirmation" type="password" placeholder='*******' handleChange={handleChangePasswordConfirmation}></InputForm>
+                    <InputForm value={password_confirmation} text="Password confirmation" type="password" placeholder='*******' handleChange={handleChangePasswordConfirmation}></InputForm>
                 </div>
             </div>
             <div className='flex w-1/2 flex-col w-full mb-4'>
@@ -137,6 +145,11 @@ export const RegisterForm = () => {
                             <option value="urology">Urology</option>
                         </select>
                     </div>
+                </div>
+            }
+            {error && 
+                <div className='mb-2'>
+                    <h4 className='text-red-500'>{errorMessage}</h4>
                 </div>
             }
             <button type="button" onClick={onRegisterUser} className="disabled:bg-white mt-5 h-10 rounded-xl bg-blue-500 text-white w-1/2 mb-8"> 
