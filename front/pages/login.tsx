@@ -17,28 +17,28 @@ const LoginPage: NextPage = () => {
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time
 
+// if we have a session, we redirect to home page if login is pressed
+// export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
 
-export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+//     const session = await getSession({ req });
+//     // console.log({session});
 
-    const session = await getSession({ req });
-    // console.log({session});
+//     const { p = '/' } = query;
 
-    const { p = '/' } = query;
-
-    if (session) {
-        return {
-            redirect: {
-                destination: p.toString(),
-                permanent: false
-            }
-        }
-    }
+//     if (session) {
+//         return {
+//             redirect: {
+//                 destination: p.toString(),
+//                 permanent: false
+//             }
+//         }
+//     }
 
 
-    return {
-        props: {}
-    }
-}
+//     return {
+//         props: {}
+//     }
+// }
 
 
 

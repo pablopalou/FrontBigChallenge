@@ -31,7 +31,7 @@ export default NextAuth({
                     user = {token, role, ...info}
                 }).catch((error) => {
                     console.log("HAY UN ERROR.")
-                    console.log(error);
+                    console.log(error); //podria poner este error en el otro lado
                 });
                 return user; 
             }
