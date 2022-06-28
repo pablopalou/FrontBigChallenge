@@ -11,9 +11,6 @@ export const SideBar = () => {
     const { user, isLoggedIn, logout } = useContext(  AuthContext );
     if (isLoggedIn){
         sidebar = <AuthSideBar></AuthSideBar>;
-        console.log("hay alguien loggeado");
-    } else {
-        console.log("no hay nadie");
     }
     return (
         sidebar
