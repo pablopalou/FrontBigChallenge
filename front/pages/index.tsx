@@ -9,14 +9,30 @@ import { Pending, InProgress, Ready } from '../components/tags';
 
 export interface iSubmission {
     id: number, 
-    patient: Object,
+    patient: iPatient,
     prescriptions: File,
     state: string,
     symptoms: string, 
     doctor?: Object,
 }
 
+export interface iPatient {
+    id: number, 
+    email: string, 
+    name: string, 
+    role: string,
+    patientInformation: iPatientInformation,
+}
 
+export interface iPatientInformation {
+    id: number,
+    birth: string,
+    diseases: string,
+    gender: "male" | "female",
+    height: number, 
+    previous_treatments: string,
+    weight: number,
+}
 
 const HomePage = () => {
     const { user, isLoggedIn, token, logout, id, name } = useContext(  AuthContext );
