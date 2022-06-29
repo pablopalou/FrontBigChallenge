@@ -9,13 +9,18 @@ export interface AuthState {
     isLoggedIn: boolean;
     user?: Object;
     role: string;
+    id: number;
+    name: string,
+    token: string,
 }
-
 
 const AUTH_INITIAL_STATE: AuthState = {
     isLoggedIn: false,
     user: undefined,
     role: 'guest',
+    id: 0,
+    name: "",
+    token: "",
 }
 
 interface Props {
@@ -32,7 +37,10 @@ export const AuthProvider:FC<Props> = ({ children }) => {
             setState({
                 isLoggedIn: true,
                 user: data?.user,
-                role: "undefined",
+                role: data?.user?.role,
+                id: data?.user?.id,
+                name: data?.user?.name,
+                token: data?.user?.token,
             })
         }
 
@@ -46,6 +54,8 @@ export const AuthProvider:FC<Props> = ({ children }) => {
             isLoggedIn: false,
             user: undefined,
             role: "undefined",
+            id: 0,
+            name: "",
         });
         // Router.push(routes.login);
     }
