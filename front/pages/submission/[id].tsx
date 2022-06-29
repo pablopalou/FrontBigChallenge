@@ -54,7 +54,7 @@ const SubmissionDetailPage:NextPage = () => {
                             {/* @ts-ignore */}
                             <div>{array[submission?.state]}</div>
                         </div>
-                        {submission?.doctor ? <div>Assigned doctor: {submission?.doctor?.name}.    Grade: {submission.doctor.doctorInformation.grade}. Speciality: {submission.doctor.doctorInformation.speciality}</div> : <div>A doctor will take this submission soon</div>}
+                        {submission?.doctor ? <div>Assigned doctor: {submission?.doctor?.name}. Grade: {submission.doctor.doctorInformation.grade}. Speciality: {submission.doctor.doctorInformation.speciality}</div> : <div>A doctor will take this submission soon</div>}
                     </div>
 
                     {/* patient info */}
@@ -104,7 +104,7 @@ const SubmissionDetailPage:NextPage = () => {
                     <div className='flex flex-col w-full'>
                         <h5 className='mb-0'> Prescriptions </h5>
                         { submission?.prescriptions ? 
-                            (<div className='bg-gray-50'> <p>submission?.prescriptions </p></div>) :
+                            (<div className='bg-gray-200 py-3 flex pl-4'> <p>{submission?.prescriptions} </p></div>) :
                             (<div className='bg-gray-200 py-3 flex pl-4 '>
                                 <img src="../icons/notavailable.svg" alt="" />
                                 <p className='text-lg pl-3'>No prescriptions have been added yet</p>

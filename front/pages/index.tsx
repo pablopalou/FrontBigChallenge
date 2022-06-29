@@ -10,7 +10,7 @@ import { Pending, InProgress, Ready } from '../components/tags';
 export interface iSubmission {
     id: number, 
     patient: iPatient,
-    prescriptions: File,
+    prescriptions: string,
     state: string,
     symptoms: string, 
     doctor?: iDoctor,
