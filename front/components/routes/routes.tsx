@@ -4,3 +4,4 @@ export const allSubmissions = "/submission/all";
 export const home = "/";
 export const login = "/login";
 export const register = "/register";
+export const createSubmission = "/createSubmission";
