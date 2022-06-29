@@ -5,8 +5,9 @@ import { useSession } from 'next-auth/react'
 import { instance } from '../api'
 import { newSubmission } from '../components/routes/routes';
 import Link from 'next/link';
+import { Pending, InProgress, Ready } from '../components/tags';
 
-interface iSubmission {
+export interface iSubmission {
     id: number, 
     patient: Object,
     prescriptions: File,
@@ -15,24 +16,26 @@ interface iSubmission {
     doctor?: Object,
 }
 
+
+
 const HomePage = () => {
     const { user, isLoggedIn, token, logout, id, name } = useContext(  AuthContext );
     const [filter, setFilter] = useState("");
     const [submissionsMade, setSubmissionsMade] = useState<iSubmission[]>([]);
-
+    
+    const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     // i have to get all the submissions made by this patient and render them in a table
     useEffect(() => {
 
         if (isLoggedIn){
-            const submissionsMade = instance.get('/submission', {
-            params: {
-                role: "patient", filter:{filter}
-            }, 
+            console.log(`state: ${filter}`)
+            const submissionsMade = instance.get(`/submission/?state=${filter}`, {
             headers: {
                     'Authorization': `Bearer ${token}`
             }
             }).then(
                 (response) => {
+                    console.log("Submissions:", response.data.data);
                     setSubmissionsMade(response.data.data)
                 }
             ).catch(
@@ -40,18 +43,30 @@ const HomePage = () => {
                 }
             )
         }
-    },[isLoggedIn])
+    },[isLoggedIn, filter])
 
     if (! isLoggedIn){
         return (<Layout/>);
     }
+
+    const handleFilterChange = (event:any) => {
+        // console.log(event.target.value);
+        if (event.target.value == "allSubmissions"){
+            setFilter("");
+        } else {
+            setFilter(event.target.value);
+        }
+        // console.log(filter);
+    }
+
     return (
         <Layout>
             <div className='w-full flex mt-2 justify-end pr-5'>
                 <div className='mb-2 pl-2 pr-2 border-2 h-10 border-slate-300 rounded-lg flex justify-center items-center'>
                     <label>
                         Filter by state:     
-                        <select className="" value={filter} onChange={(event) => (setFilter(event.target.value))}>
+                        <select className="" value={filter} onChange={(event) => handleFilterChange(event)}>
+                            <option value="allSubmissions">All submissions</option>
                             <option value="pending">Pending</option>
                             <option value="inProgress">In progress</option>
                             <option value="ready">Ready</option>
@@ -70,14 +85,15 @@ const HomePage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        
+                    {/* {submission.state.replace( /([A-Z])/g, " $1" ).charAt(0).toUpperCase() + submission.state.replace( /([A-Z])/g, " $1" ).slice(1)} */}
                         {submissionsMade.map((submission) => {
                             return (
                                 <tr key={submission.id} className="odd:bg-white even:bg-gray-50">
                                     <td className='pl-3'>{submission.id}</td>
                                     { submission.doctor ? <td className='pl-3'>submission.doctor.name</td> : <td></td>}
-                                    <td className='pl-3'>{submission.state.replace( /([A-Z])/g, " $1" ).charAt(0).toUpperCase() + submission.state.replace( /([A-Z])/g, " $1" ).slice(1)}</td>
-                                    <td className='pl-3'><Link href='/submission/${submission.id}' passHref><a className="text-blue-500 hover:text-blue-800">View more</a></Link></td>
+                                    {/* @ts-ignore */}
+                                    <td>{array[submission.state]}</td>
+                                    <td className='pl-3'><Link href={'/submission/'+submission.id} passHref><a className="text-blue-500 hover:text-blue-800">View more</a></Link></td>
                                 </tr>);
                             }
                         )}
