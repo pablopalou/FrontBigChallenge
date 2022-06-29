@@ -13,7 +13,7 @@ export interface iSubmission {
     prescriptions: File,
     state: string,
     symptoms: string, 
-    doctor?: Object,
+    doctor?: iDoctor,
 }
 
 export interface iPatient {
@@ -32,6 +32,20 @@ export interface iPatientInformation {
     height: number, 
     previous_treatments: string,
     weight: number,
+}
+
+export interface iDoctor {
+    id: number, 
+    email: string, 
+    name: string, 
+    role: string,
+    doctorInformation: iDoctorInformation,
+}
+
+export interface iDoctorInformation {
+    id: number,
+    grade: number,
+    speciality: string,
 }
 
 const HomePage = () => {
@@ -106,7 +120,7 @@ const HomePage = () => {
                             return (
                                 <tr key={submission.id} className="odd:bg-white even:bg-gray-50">
                                     <td className='pl-3'>{submission.id}</td>
-                                    { submission.doctor ? <td className='pl-3'>submission.doctor.name</td> : <td></td>}
+                                    { submission.doctor ? <td className='pl-3'>{submission.doctor.name}</td> : <td></td>}
                                     {/* @ts-ignore */}
                                     <td>{array[submission.state]}</td>
                                     <td className='pl-3'><Link href={'/submission/'+submission.id} passHref><a className="text-blue-500 hover:text-blue-800">View more</a></Link></td>

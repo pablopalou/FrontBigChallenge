@@ -54,7 +54,7 @@ const SubmissionDetailPage:NextPage = () => {
                             {/* @ts-ignore */}
                             <div>{array[submission?.state]}</div>
                         </div>
-                        {submission?.doctor ? <div>submission?.doctor?.name</div> : <div>A doctor will take this submission soon</div>}
+                        {submission?.doctor ? <div>Assigned doctor: {submission?.doctor?.name}.    Grade: {submission.doctor.doctorInformation.grade}. Speciality: {submission.doctor.doctorInformation.speciality}</div> : <div>A doctor will take this submission soon</div>}
                     </div>
 
                     {/* patient info */}
