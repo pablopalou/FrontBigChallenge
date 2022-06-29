@@ -56,6 +56,7 @@ export const AuthProvider:FC<Props> = ({ children }) => {
             role: "undefined",
             id: 0,
             name: "",
+            token: '',
         });
         // Router.push(routes.login);
     }

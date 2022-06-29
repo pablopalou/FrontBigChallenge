@@ -2,8 +2,6 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials";
 import axios from "axios";
 import {instance} from '../../../api';
-import { AuthState } from "../../../context/AuthProvider";
- 
 
 export default NextAuth({
     providers: [
@@ -13,7 +11,7 @@ export default NextAuth({
                 email: { type: 'email'},
                 password: {type: 'password'},
             },
-            async authorize(credentials):AuthState | null{
+            async authorize(credentials){
                 let user = null;
                 await instance.post('/login',{
                     email: credentials?.email,
@@ -25,10 +23,10 @@ export default NextAuth({
                     let name = response.data.name
                     let info = response.data
                     user = {token, role, id, name, ...info}
-                    // console.log(user);
+                    console.log(user);
                 }).catch((error) => {
                     console.log("There is an ERROR.")
-                    // console.log(error);
+                    console.log(error);
                 });
                 return user; 
             }
