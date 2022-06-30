@@ -9,14 +9,44 @@ import { Pending, InProgress, Ready } from '../components/tags';
 
 export interface iSubmission {
     id: number, 
-    patient: Object,
-    prescriptions: File,
+    patient: iPatient,
+    prescriptions: string,
     state: string,
     symptoms: string, 
-    doctor?: Object,
+    doctor?: iDoctor,
 }
 
+export interface iPatient {
+    id: number, 
+    email: string, 
+    name: string, 
+    role: string,
+    patientInformation: iPatientInformation,
+}
 
+export interface iPatientInformation {
+    id: number,
+    birth: string,
+    diseases: string,
+    gender: "male" | "female",
+    height: number, 
+    previous_treatments: string,
+    weight: number,
+}
+
+export interface iDoctor {
+    id: number, 
+    email: string, 
+    name: string, 
+    role: string,
+    doctorInformation: iDoctorInformation,
+}
+
+export interface iDoctorInformation {
+    id: number,
+    grade: number,
+    speciality: string,
+}
 
 const HomePage = () => {
     const { user, isLoggedIn, token, logout, id, name } = useContext(  AuthContext );
@@ -28,14 +58,14 @@ const HomePage = () => {
     useEffect(() => {
 
         if (isLoggedIn){
-            console.log(`state: ${filter}`)
+            // console.log(`state: ${filter}`)
             const submissionsMade = instance.get(`/submission/?state=${filter}`, {
             headers: {
                     'Authorization': `Bearer ${token}`
             }
             }).then(
                 (response) => {
-                    console.log("Submissions:", response.data.data);
+                    // console.log("Submissions:", response.data.data);
                     setSubmissionsMade(response.data.data)
                 }
             ).catch(
@@ -78,19 +108,19 @@ const HomePage = () => {
                 <table className='table-auto border-2 h-10 border-slate-100 rounded-2xl w-11/12 '>
                     <thead>
                         <tr className='bg-gray-50'>
-                            <th scope="col">Submission ID</th>
-                            <th scope="col">Doctor assigned</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Details</th>
+                            <th scope="col" className='text-left pl-3'>Submission ID</th>
+                            <th scope="col" className='text-left pl-3'>Doctor assigned</th>
+                            <th scope="col" className='text-left pl-3'>Status</th>
+                            <th scope="col" className='text-left pl-3'>Details</th>
                         </tr>
                     </thead>
                     <tbody>
                     {/* {submission.state.replace( /([A-Z])/g, " $1" ).charAt(0).toUpperCase() + submission.state.replace( /([A-Z])/g, " $1" ).slice(1)} */}
                         {submissionsMade.map((submission) => {
                             return (
-                                <tr key={submission.id} className="odd:bg-white even:bg-gray-50">
+                                <tr key={submission.id} className="odd:bg-white even:bg-gray-50 h-10">
                                     <td className='pl-3'>{submission.id}</td>
-                                    { submission.doctor ? <td className='pl-3'>submission.doctor.name</td> : <td></td>}
+                                    { submission.doctor ? <td className='pl-3'>{submission.doctor.name}</td> : <td></td>}
                                     {/* @ts-ignore */}
                                     <td>{array[submission.state]}</td>
                                     <td className='pl-3'><Link href={'/submission/'+submission.id} passHref><a className="text-blue-500 hover:text-blue-800">View more</a></Link></td>

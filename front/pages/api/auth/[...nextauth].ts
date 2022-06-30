@@ -3,6 +3,14 @@ import Credentials from "next-auth/providers/credentials";
 import axios from "axios";
 import {instance} from '../../../api';
 
+// export interface iUser {
+//     token: string, 
+//     role: string, 
+//     id: number, 
+//     name: string, 
+//     info?: ...  
+// }
+
 export default NextAuth({
     providers: [
         Credentials({

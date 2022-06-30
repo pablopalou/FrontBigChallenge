@@ -6,6 +6,7 @@ import { signIn } from 'next-auth/react';
 import { instance } from '../../api';
 import { useRouter } from 'next/router';
 import { Loading } from '@nextui-org/react';
+import * as routes from '../routes'
 
 const specialities = [ 'Cardiology', 'Dermatology','Neurology','Pediatrics','Psychiatry','Radiation oncology', 'surgery']
 
@@ -140,7 +141,7 @@ export const RegisterForm = () => {
             {loading && <Loading></Loading>}
             <p>
                 Already have an account yet?  
-                <Link href="/login" passHref><a className="text-blue-500 hover:text-blue-800"> Log in</a></Link>
+                <Link href={routes.login} passHref><a className="text-blue-500 hover:text-blue-800"> Log in</a></Link>
             </p>
         </div>
     )
