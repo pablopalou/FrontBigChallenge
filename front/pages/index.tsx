@@ -108,17 +108,17 @@ const HomePage = () => {
                 <table className='table-auto border-2 h-10 border-slate-100 rounded-2xl w-11/12 '>
                     <thead>
                         <tr className='bg-gray-50'>
-                            <th scope="col">Submission ID</th>
-                            <th scope="col">Doctor assigned</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Details</th>
+                            <th scope="col" className='text-left pl-3'>Submission ID</th>
+                            <th scope="col" className='text-left pl-3'>Doctor assigned</th>
+                            <th scope="col" className='text-left pl-3'>Status</th>
+                            <th scope="col" className='text-left pl-3'>Details</th>
                         </tr>
                     </thead>
                     <tbody>
                     {/* {submission.state.replace( /([A-Z])/g, " $1" ).charAt(0).toUpperCase() + submission.state.replace( /([A-Z])/g, " $1" ).slice(1)} */}
                         {submissionsMade.map((submission) => {
                             return (
-                                <tr key={submission.id} className="odd:bg-white even:bg-gray-50">
+                                <tr key={submission.id} className="odd:bg-white even:bg-gray-50 h-10">
                                     <td className='pl-3'>{submission.id}</td>
                                     { submission.doctor ? <td className='pl-3'>{submission.doctor.name}</td> : <td></td>}
                                     {/* @ts-ignore */}

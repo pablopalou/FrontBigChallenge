@@ -10,19 +10,21 @@ import { NextPage } from 'next';
 import {useRouter} from "next/router"
 import { Pending, InProgress, Ready } from '../../components/tags';
 import * as routes from '../../components/routes'
+import { ShowInformation } from '../../components/ShowInformation';
 
 const SubmissionDetailPage:NextPage = () => {
     const router = useRouter();
     const query = router.query;
     const id = router.query.id;
     const { user, isLoggedIn, token, logout, name } = useContext(  AuthContext );
-    const [submission, setSubmission] = useState<iSubmission>();
+    const [submission, setSubmission] = useState<iSubmission | undefined>();
+    const [prescription, setPrescription] = useState('');
     const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     // i have to get all the information from the submission
     useEffect(() => {
 
         if (isLoggedIn){
-            const submissionsMade = instance.get(`/submission/${id}`, {
+            instance.get(`/submission/${id}`, {
             headers: {
                     'Authorization': `Bearer ${token}`
             }
@@ -35,7 +37,24 @@ const SubmissionDetailPage:NextPage = () => {
                 (error) => {
                 }
             )
+
+            instance.get(`/submission/prescription/${id}`, {
+                headers: {
+                        'Authorization': `Bearer ${token}`
+                }
+                }).then(
+                    (response) => {
+                        console.log("Prescription:", response.data.url);
+                        setPrescription(response.data.url);
+                    }
+                ).catch(
+                    (error) => {
+                    }
+                )
+        
         }
+
+
     },[isLoggedIn])
 
     if (! isLoggedIn){
@@ -60,30 +79,9 @@ const SubmissionDetailPage:NextPage = () => {
                     {/* patient info */}
                     <div className='flex flex-col mb-4'>
                         <h5> Patient Information:</h5>
-                        <div className='flex w-full'>
-                            <p className='w-1/2'> Email </p>
-                            <p className='w-1/2'> Name </p>
-                        </div>
-                        <div className='flex mb-3'>
-                            <div className='w-1/2'> {submission?.patient.email} </div>
-                            <div className='w-1/2'> {submission?.patient.name} </div>
-                        </div>
-                        <div className='flex w-full'>
-                            <p className='w-1/2'> Birth </p>
-                            <p className='w-1/2'> Gender </p>
-                        </div>
-                        <div className='flex mb-3'>
-                            <div className='w-1/2'> {submission?.patient.patientInformation.birth} </div>
-                            <div className='w-1/2'> {submission?.patient.patientInformation.gender} </div>
-                        </div>
-                        <div className='flex w-full'>
-                            <p className='w-1/2'> Height </p>
-                            <p className='w-1/2'> Weight </p>
-                        </div>
-                        <div className='flex mb-3'>
-                            <div className='w-1/2'> {submission?.patient.patientInformation.height} </div>
-                            <div className='w-1/2'> {submission?.patient.patientInformation.weight} </div>
-                        </div>
+                        <ShowInformation title1="Email" title2='Name' property1={submission?.patient.email} property2={submission?.patient.name}></ShowInformation>
+                        <ShowInformation title1="Birth" title2='Gender' property1={submission?.patient.patientInformation.birth} property2={submission?.patient.patientInformation.gender}></ShowInformation>
+                        <ShowInformation title1="Height" title2='Weight' property1={submission?.patient.patientInformation.height} property2={submission?.patient.patientInformation.weight}></ShowInformation>
 
                         <div className=' mb-3'>
                             <p> Diseases </p>
@@ -104,7 +102,9 @@ const SubmissionDetailPage:NextPage = () => {
                     <div className='flex flex-col w-full'>
                         <h5 className='mb-0'> Prescriptions </h5>
                         { submission?.prescriptions ? 
-                            (<div className='bg-gray-200 py-3 flex pl-4'> <p>{submission?.prescriptions} </p></div>) :
+                            (<div className='bg-gray-200 py-3 flex pl-4'>
+                                <Link href={prescription} passHref><a className="text-blue-500 hover:text-blue-800"> Download your prescription</a></Link>
+                            </div>) :
                             (<div className='bg-gray-200 py-3 flex pl-4 '>
                                 <img src="../icons/notavailable.svg" alt="" />
                                 <p className='text-lg pl-3'>No prescriptions have been added yet</p>

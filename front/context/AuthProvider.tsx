@@ -4,10 +4,11 @@ import { useSession, signOut } from 'next-auth/react';
 import axios from 'axios';
 import {AuthContext} from './AuthContext'
 import * as routes from '../components/routes'
+import { iDoctor, iPatient } from '../pages';
 
 export interface AuthState {
     isLoggedIn: boolean;
-    user?: Object;
+    user?: iPatient | iDoctor; //user from authorize is not iPatient or Doctor
     role: string;
     id: number;
     name: string,

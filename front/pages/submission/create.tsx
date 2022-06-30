@@ -17,7 +17,6 @@ const NewSubmissionPage:NextPage = () => {
     const [symptoms, setSymptoms] = useState('');
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [success, setSuccess] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [loading, setLoading] = useState(false);
     
@@ -29,7 +28,6 @@ const NewSubmissionPage:NextPage = () => {
             (response)=> {
                 setError(false);
                 setErrorMessage('');
-                setSuccess(true);
                 setSuccessMessage(response.data.message);
                 setLoading(false);
             }
@@ -37,7 +35,7 @@ const NewSubmissionPage:NextPage = () => {
             (error)=> {
                 setLoading(false);
                 setError(true);
-                setSuccess(false);
+                setSuccessMessage('');
                 setErrorMessage(error.response.data.message);
             }
         )
@@ -64,7 +62,7 @@ const NewSubmissionPage:NextPage = () => {
                         name="previousTreatments" placeholder='' title='fd'
                         />
                     </div>
-                    {success && <div className='mb-2'> <h4 className='text-green-500'> {successMessage} </h4> </div>}
+                    {!error && successMessage.length > 0 && <div className='mb-2'> <h4 className='text-green-500'> {successMessage} </h4> </div>}
                     {error && 
                         <div className='mb-2'>
                             <h4 className='text-red-500'>{errorMessage}</h4>
