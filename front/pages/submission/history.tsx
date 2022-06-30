@@ -7,6 +7,7 @@ import { newSubmission } from '../../components/routes/routes';
 import Link from 'next/link';
 import { Pending, InProgress, Ready } from '../../components/tags';
 import { iSubmission } from '../index';
+import SubmissionAPI from '../../utils/Services/SubmissionAPI';
 
 const TaskHistoryPage = () => {
     // Page of all the submissions taken by the doctor
@@ -17,14 +18,14 @@ const TaskHistoryPage = () => {
     
     const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     // i have to get all the submissions Taken by this patient and render them in a table
+    
+    const api = new SubmissionAPI();
+    
+
     useEffect(() => {
         if (isLoggedIn){
             console.log(`state: ${filter}`);
-            instance.get(`/submission?role=doctor&state=${filter}`, {
-            headers: {
-                    'Authorization': `Bearer ${token}`
-            }
-            }).then(
+            api.getSubmissionsTaken({filter,token}).then(
                 (response) => {
                     console.log("Submissions:", response);
                     setSubmissionsTaken(response.data.data)
