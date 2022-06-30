@@ -5,7 +5,10 @@ interface ContextProps {
     isLoggedIn: boolean;
     user?: Object;
     logout: () => void;
-    role: string
+    role: string,
+    id: number,
+    name: string,
+    token: string,
 }
 
 

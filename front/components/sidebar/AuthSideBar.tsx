@@ -5,6 +5,7 @@ import {useRouter} from 'next/router'
 import * as routes from '../routes'
 import {useContext} from 'react'
 import { AuthContext } from '../../context/AuthContext';
+import { useSession } from 'next-auth/react'
 
 export const AuthSideBar = () => {
     const router = useRouter();
@@ -30,10 +31,11 @@ export const AuthSideBar = () => {
 
     let taskHistory = <></>
     let allSubmissions = <></>
-    // if (doctor ){
-    taskHistory = <Button handle={handleTaskHistory} text="Task History" route="taskhistory.svg" />
-    allSubmissions = <Button handle={handleAllSubmissions} text="All Submissions" route="allsubmissions.svg"/>
-    // }
+    const session = useSession();
+    if (session.data?.user?.role  == "doctor"){
+        taskHistory = <Button handle={handleTaskHistory} text="Task History" route="taskhistory.svg" />
+        allSubmissions = <Button handle={handleAllSubmissions} text="All Submissions" route="allsubmissions.svg"/>
+    }
 
     return (
         <>
@@ -43,10 +45,12 @@ export const AuthSideBar = () => {
             {taskHistory}
             { isLoggedIn && 
                 <div className='bg-gray-700 flex w-full h-14 items-center content-end absolute inset-x-0 bottom-0'>
-                    <div className="rounded-full bg-gray-400 h-10 w-10 ml-3 mr-3"></div>
+                    <div className="rounded-full bg-gray-400 h-10 w-10 ml-3 mr-3 flex justify-center items-center"> 
+                        <div className='text-white text-xl'>{session.data?.user?.name.charAt(0)}</div>
+                    </div>
                     <div className="flex flex-col">
-                        <div className='text-white text-sm'> Name LastName</div>
-                        <button type="button" onClick={ logout} className='text-zinc-300 text-xs'> 
+                        <div className='text-white text-sm'> {session.data?.user?.name.split(' ').slice(0,2).join(' ')} </div>
+                        <button type="button" onClick={logout} className='text-zinc-300 text-xs'> 
                             Sign out
                         </button>
                     </div>

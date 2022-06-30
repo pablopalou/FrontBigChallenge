@@ -3,6 +3,14 @@ import Credentials from "next-auth/providers/credentials";
 import axios from "axios";
 import {instance} from '../../../api';
 
+// export interface iUser {
+//     token: string, 
+//     role: string, 
+//     id: number, 
+//     name: string, 
+//     info?: ...  
+// }
+
 export default NextAuth({
     providers: [
         Credentials({
@@ -17,11 +25,13 @@ export default NextAuth({
                     email: credentials?.email,
                     password: credentials?.password,
                 }).then((response) => {
-                    console.log("There is NO error.")
                     let token = response.data.token
                     let role = response.data.role
-                    let info = response.data.data
-                    user = {token, role, ...info}
+                    let id = response.data.id
+                    let name = response.data.name
+                    let info = response.data
+                    user = {token, role, id, name, ...info}
+                    console.log(user);
                 }).catch((error) => {
                     console.log("There is an ERROR.")
                     console.log(error);
