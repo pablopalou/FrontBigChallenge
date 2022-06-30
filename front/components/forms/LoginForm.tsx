@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import {useRouter} from "next/router";
 import { useEffect } from 'react';
+import * as routes from '../routes';
 
 export const LoginForm = () => {
     const [email, setEmail] = useState("");
@@ -44,7 +45,7 @@ export const LoginForm = () => {
             </div>
             <p>
                 Don't have an account yet?  
-                <Link href="/register" passHref><a className="text-blue-500 hover:text-blue-800"> Sign up</a></Link>
+                <Link href={routes.register} passHref><a className="text-blue-500 hover:text-blue-800"> Sign up</a></Link>
             </p>
         </div>
     )
