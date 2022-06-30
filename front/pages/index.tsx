@@ -58,14 +58,14 @@ const HomePage = () => {
     useEffect(() => {
 
         if (isLoggedIn){
-            console.log(`state: ${filter}`)
+            // console.log(`state: ${filter}`)
             const submissionsMade = instance.get(`/submission/?state=${filter}`, {
             headers: {
                     'Authorization': `Bearer ${token}`
             }
             }).then(
                 (response) => {
-                    console.log("Submissions:", response.data.data);
+                    // console.log("Submissions:", response.data.data);
                     setSubmissionsMade(response.data.data)
                 }
             ).catch(

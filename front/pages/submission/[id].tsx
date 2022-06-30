@@ -30,7 +30,7 @@ const SubmissionDetailPage:NextPage = () => {
             }
             }).then(
                 (response) => {
-                    console.log("Submission:", response.data.data);
+                    // console.log("Submission:", response.data.data);
                     setSubmission(response.data.data)
                 }
             ).catch(
@@ -63,7 +63,6 @@ const SubmissionDetailPage:NextPage = () => {
 
     const propertyGender = (gender:string|undefined) => {
         if (gender){
-            console.log(gender);
             return gender.charAt(0).toUpperCase() + gender.slice(1);
         }
         return "";
