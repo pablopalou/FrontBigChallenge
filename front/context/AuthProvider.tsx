@@ -38,10 +38,10 @@ export const AuthProvider:FC<Props> = ({ children }) => {
             setState({
                 isLoggedIn: true,
                 user: data?.user,
-                role: data?.user?.role,
-                id: data?.user?.id,
-                name: data?.user?.name,
-                token: data?.user?.token,
+                role: data?.user.role,
+                id: data?.user.id,
+                name: data?.user.name,
+                token: data?.user.token,
             })
         }
 
