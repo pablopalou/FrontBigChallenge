@@ -3,14 +3,11 @@ import { iSubmission } from '../pages/index';
 interface Props {
     title1: string,
     title2: string, 
-    property1: string | undefined | number,
+    property1?: string | undefined | number,
     property2: string | undefined | number,
 }
 
 export const  ShowInformation = ({title1, title2, property1, property2}: Props) => {
-    const title1Lower = title1.toLowerCase();
-    const title2Lower = title2.toLowerCase();
-
     return (
         <>
             <div className='flex w-full'>

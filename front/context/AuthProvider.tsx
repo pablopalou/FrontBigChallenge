@@ -8,7 +8,7 @@ import { iDoctor, iPatient } from '../pages';
 
 export interface AuthState {
     isLoggedIn: boolean;
-    user?: iPatient | iDoctor; //user from authorize is not iPatient or Doctor
+    user?: Object;
     role: string;
     id: number;
     name: string,

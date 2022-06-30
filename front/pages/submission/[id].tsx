@@ -61,6 +61,14 @@ const SubmissionDetailPage:NextPage = () => {
         return (<Layout/>);
     }
 
+    const propertyGender = (gender:string|undefined) => {
+        if (gender){
+            console.log(gender);
+            return gender.charAt(0).toUpperCase() + gender.slice(1);
+        }
+        return "";
+    }
+
     return (
         <Layout>
             <div className='w-full flex justify-center pb-10'>
@@ -79,8 +87,8 @@ const SubmissionDetailPage:NextPage = () => {
                     {/* patient info */}
                     <div className='flex flex-col mb-4'>
                         <h5> Patient Information:</h5>
-                        <ShowInformation title1="Email" title2='Name' property1={submission?.patient.email} property2={submission?.patient.name}></ShowInformation>
-                        <ShowInformation title1="Birth" title2='Gender' property1={submission?.patient.patientInformation.birth} property2={submission?.patient.patientInformation.gender}></ShowInformation>
+                        <ShowInformation title1="Email" title2='Name' property1={submission?.patient.email} property2={submission?.patient.name}></ShowInformation>        
+                        <ShowInformation title1="Birth" title2='Gender' property1={submission?.patient.patientInformation.birth} property2={ propertyGender(submission?.patient.patientInformation.gender) }></ShowInformation>
                         <ShowInformation title1="Height" title2='Weight' property1={submission?.patient.patientInformation.height} property2={submission?.patient.patientInformation.weight}></ShowInformation>
 
                         <div className=' mb-3'>
