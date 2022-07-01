@@ -107,7 +107,7 @@ const HomePage = () => {
                 </div>
             </div>
             { router.query.delete == "yes" && 
-                <h4 className=' pl-16 text-green-500'> Submission succesfully deleted! </h4> 
+                <h4 className=' pl-16 text-green-500'> Submission deleted succesfully! </h4> 
             }
             <div className="w-full flex justify-center">
                 <table className='table-auto border-2 h-10 border-slate-100 rounded-2xl w-11/12 '>
