@@ -3,7 +3,6 @@ import {useContext, useEffect, useState} from 'react'
 import { AuthContext } from '../../context/AuthContext';
 import { useSession } from 'next-auth/react'
 import { instance } from '../../api'
-import { newSubmission } from '../../components/routes/routes';
 import Link from 'next/link';
 import { iSubmission } from '../index';
 import { NextPage } from 'next';
@@ -11,6 +10,7 @@ import {useRouter} from "next/router"
 import { Pending, InProgress, Ready } from '../../components/tags';
 import * as routes from '../../components/routes'
 import { ShowInformation } from '../../components/ShowInformation';
+import { editSubmission } from '../../components/routes/routes';
 
 const SubmissionDetailPage:NextPage = () => {
     const router = useRouter();
@@ -68,6 +68,10 @@ const SubmissionDetailPage:NextPage = () => {
         return "";
     }
 
+    const handleEdit = () => {
+        router.push(routes.editSubmission+`/${id}`);
+    }
+
     return (
         <Layout>
             <div className='w-full flex justify-center pb-10'>
@@ -103,7 +107,12 @@ const SubmissionDetailPage:NextPage = () => {
                     {/* symptoms */}
                     <div className='flex flex-col mb-4'>
                         <h5 className='mb-0'> Symptoms </h5>
-                        <p> {submission?.symptoms}</p>
+                        <div className='flex'>
+                            <p className='mr-4'> {submission?.symptoms}</p>
+                            {submission?.state == "pending" && 
+                                <button className='w-40 rounded-xl bg-blue-100 text-blue-800' onClick={handleEdit}>Edit symptoms</button>
+                            }
+                        </div>
                     </div>
                     {/* prescriptions */}
                     <div className='flex flex-col w-full'>

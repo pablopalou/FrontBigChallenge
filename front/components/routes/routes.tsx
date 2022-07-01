@@ -5,3 +5,5 @@ export const home = "/";
 export const login = "/login";
 export const register = "/register";
 export const createSubmission = "/createSubmission";
+export const editSubmission = "/submission/edit";
+export const submission = "/submission";
