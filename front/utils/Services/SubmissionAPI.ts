@@ -11,6 +11,11 @@ interface PropsEdit {
     symptoms: string,
 }
 
+interface PropsDelete {
+    id: string,
+    token: string,
+}
+
 export default class SubmissionAPI {
 
     getSubmissions = ({filter, token, all}:PropsGet) => {
@@ -31,4 +36,11 @@ export default class SubmissionAPI {
             })
     };
 
+    deleteSubmission = ({id, token}:PropsDelete) => {
+        return instance.delete(`/submission/${id}`,{
+            headers: {
+                    'Authorization': `Bearer ${token}`
+            }
+            })
+    };
 }
