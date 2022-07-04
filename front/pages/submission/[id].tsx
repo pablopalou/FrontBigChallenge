@@ -18,16 +18,18 @@ import 'reactjs-popup/dist/index.css';
 const SubmissionDetailPage:NextPage = () => {
     const router = useRouter();
     const query = router.query;
-    const id = router.query.id as string;
-    const { user, isLoggedIn, token, logout, name } = useContext(  AuthContext );
+    const idSubmission = router.query.id as string;
+    const { user, isLoggedIn, token, logout, name, id } = useContext(  AuthContext );
     const [submission, setSubmission] = useState<iSubmission | undefined>();
     const [prescription, setPrescription] = useState('');
+    const [file, setFile] = useState(null);
+
     const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     // i have to get all the information from the submission
     useEffect(() => {
 
         if (isLoggedIn){
-            instance.get(`/submission/${id}`, {
+            instance.get(`/submission/${idSubmission}`, {
             headers: {
                     'Authorization': `Bearer ${token}`
             }
@@ -41,19 +43,21 @@ const SubmissionDetailPage:NextPage = () => {
                 }
             )
 
-            instance.get(`/submission/prescription/${id}`, {
-                headers: {
-                        'Authorization': `Bearer ${token}`
-                }
-                }).then(
-                    (response) => {
-                        console.log("Prescription:", response.data.url);
-                        setPrescription(response.data.url);
+            if (submission?.doctor?.id == id || submission?.patient.id == id) {
+                instance.get(`/submission/prescription/${idSubmission}`, {
+                    headers: {
+                            'Authorization': `Bearer ${token}`
                     }
-                ).catch(
-                    (error) => {
-                    }
-                )
+                    }).then(
+                        (response) => {
+                            // console.log("Prescription:", response.data.url);
+                            setPrescription(response.data.url);
+                        }
+                    ).catch(
+                        (error) => {
+                        }
+                    )
+            }
         
         }
 
@@ -72,13 +76,13 @@ const SubmissionDetailPage:NextPage = () => {
     }
 
     const handleEdit = () => {
-        router.push(routes.editSubmission+`/${id}`);
+        router.push(routes.editSubmission+`/${idSubmission}`);
     }
 
     const api = new SubmissionAPI();
 
     const handleDelete = () => {
-        api.deleteSubmission({id, token}).then(
+        api.deleteSubmission({idSubmission, token}).then(
             (response) => {
                 console.log(response);
                 router.push(routes.home+'?delete=yes');
@@ -87,6 +91,31 @@ const SubmissionDetailPage:NextPage = () => {
             (error) => {
             }
         )
+    }
+
+    const uploadPrescription = () => {
+        if (file){
+            const formData = new FormData();
+            formData.append('prescriptions', file);
+            // console.log("file",file);
+            // console.log("formdata",formData);
+            api.uploadPrescription({idSubmission, formData, token}).then(
+                (response) => {
+                    // console.log(response);
+                    window.location.reload();
+                }
+            ).catch(
+                (error) => {
+                    console.log(error);
+                }
+            )
+        }
+        // formData.append(setFile);
+        // refresh
+    }
+
+    const onFileChange = (event:any) => {
+        setFile(event.target.files[0]);
     }
 
     return (
@@ -100,16 +129,24 @@ const SubmissionDetailPage:NextPage = () => {
                             <h4 className='pr-4 mb-0 w-1/5'>{`Submission: ${submission?.id}`}</h4>
                             {/* @ts-ignore */}
                             <div className='w-1/6'>{array[submission?.state]}</div>
-                            <div className='flex w-full justify-end'>
-                                <Popup className="" trigger={<button className='w-32 h-8 rounded-xl bg-red-100 text-red-800'>Delete</button>} 
-                                    position="left center">
-                                    <div className="flex flex-col items-center">
-                                        <h5>Are you sure you want to delete this submission? </h5>
-                                        <p>If you want to cancel, click outside the pop up</p>
-                                        <button className='w-32 h-8 rounded-xl bg-red-100 text-red-800' onClick={handleDelete}>Yes, delete</button>
-                                    </div>
-                                </Popup>
-                            </div>
+                            {submission?.patient.id == id && 
+                                <div className='flex w-full justify-end'>
+                                    <Popup className="" trigger={<button className='w-32 h-8 rounded-xl bg-red-100 text-red-800'>Delete</button>} 
+                                        position="left center">
+                                        <div className="flex flex-col items-center">
+                                            <h5>Are you sure you want to delete this submission? </h5>
+                                            <p>If you want to cancel, click outside the pop up</p>
+                                            <button className='w-32 h-8 rounded-xl bg-red-100 text-red-800' onClick={handleDelete}>Yes, delete</button>
+                                        </div>
+                                    </Popup>
+                                </div>
+                            }
+                            {submission?.doctor?.id == id && 
+                                <div className='flex w-full justify-end'>
+                                    <input title="a" placeholder="" type="file" onChange={onFileChange} />
+                                    <button className='w-48 h-8 rounded-xl bg-gray-100 text-gray-800' onClick={uploadPrescription}>Upload Prescription</button>
+                                </div>
+                            }
                         </div>
                         {submission?.doctor ? <div>Assigned doctor: {submission?.doctor?.name}. Grade: {submission.doctor.doctorInformation.grade}. Speciality: {submission.doctor.doctorInformation.speciality}</div> : <div>A doctor will take this submission soon</div>}
                     </div>
@@ -136,7 +173,7 @@ const SubmissionDetailPage:NextPage = () => {
                         <h5 className='mb-0'> Symptoms </h5>
                         <div className='flex'>
                             <p className='mr-4'> {submission?.symptoms}</p>
-                            {submission?.state == "pending" && 
+                            {submission?.state == "pending" && submission?.patient.id == id && 
                                 <button className='w-40 rounded-xl bg-blue-100 text-blue-800' onClick={handleEdit}>Edit symptoms</button>
                             }
                         </div>

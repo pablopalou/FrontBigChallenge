@@ -64,7 +64,7 @@ const TaskHistoryPage = () => {
                     </label>
                 </div>
             </div>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center pb-8">
                 <Table submissions={submissionsTaken}></Table>
             </div>
             
