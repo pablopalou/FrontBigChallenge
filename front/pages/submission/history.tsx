@@ -21,7 +21,6 @@ const TaskHistoryPage = () => {
     // i have to get all the submissions Taken by this patient and render them in a table
     
     const api = new SubmissionAPI();
-    
 
     useEffect(() => {
         if (isLoggedIn){
