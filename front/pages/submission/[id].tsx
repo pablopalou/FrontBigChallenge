@@ -3,7 +3,6 @@ import {useContext, useEffect, useState} from 'react'
 import { AuthContext } from '../../context/AuthContext';
 import { useSession } from 'next-auth/react'
 import { instance } from '../../api'
-import { newSubmission } from '../../components/routes/routes';
 import Link from 'next/link';
 import { iSubmission } from '../index';
 import { NextPage } from 'next';
@@ -11,11 +10,15 @@ import {useRouter} from "next/router"
 import { Pending, InProgress, Ready } from '../../components/tags';
 import * as routes from '../../components/routes'
 import { ShowInformation } from '../../components/ShowInformation';
+import { editSubmission } from '../../components/routes/routes';
+import SubmissionAPI from '../../utils/Services/SubmissionAPI';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 const SubmissionDetailPage:NextPage = () => {
     const router = useRouter();
     const query = router.query;
-    const id = router.query.id;
+    const id = router.query.id as string;
     const { user, isLoggedIn, token, logout, name } = useContext(  AuthContext );
     const [submission, setSubmission] = useState<iSubmission | undefined>();
     const [prescription, setPrescription] = useState('');
@@ -68,6 +71,24 @@ const SubmissionDetailPage:NextPage = () => {
         return "";
     }
 
+    const handleEdit = () => {
+        router.push(routes.editSubmission+`/${id}`);
+    }
+
+    const api = new SubmissionAPI();
+
+    const handleDelete = () => {
+        api.deleteSubmission({id, token}).then(
+            (response) => {
+                console.log(response);
+                router.push(routes.home+'?delete=yes');
+            }
+        ).catch(
+            (error) => {
+            }
+        )
+    }
+
     return (
         <Layout>
             <div className='w-full flex justify-center pb-10'>
@@ -76,9 +97,19 @@ const SubmissionDetailPage:NextPage = () => {
                     {/* div for id, status and doctor*/}
                     <div className='flex flex-col mb-4 border-b-2 pb-4'>
                         <div className='flex items-center mb-2'>
-                            <h4 className='mr-4 mb-0'>Submission: {submission?.id}</h4>
+                            <h4 className='pr-4 mb-0'>{`Submission: ${submission?.id}`}</h4>
                             {/* @ts-ignore */}
                             <div>{array[submission?.state]}</div>
+                            <div className='flex w-full justify-end'>
+                                <Popup className="" trigger={<button className='w-32 h-8 rounded-xl bg-red-100 text-red-800'>Delete</button>} 
+                                    position="left center">
+                                    <div className="flex flex-col items-center">
+                                        <h5>Are you sure you want to delete this submission? </h5>
+                                        <p>If you want to cancel, click outside the pop up</p>
+                                        <button className='w-32 h-8 rounded-xl bg-red-100 text-red-800' onClick={handleDelete}>Yes, delete</button>
+                                    </div>
+                                </Popup>
+                            </div>
                         </div>
                         {submission?.doctor ? <div>Assigned doctor: {submission?.doctor?.name}. Grade: {submission.doctor.doctorInformation.grade}. Speciality: {submission.doctor.doctorInformation.speciality}</div> : <div>A doctor will take this submission soon</div>}
                     </div>
@@ -103,7 +134,12 @@ const SubmissionDetailPage:NextPage = () => {
                     {/* symptoms */}
                     <div className='flex flex-col mb-4'>
                         <h5 className='mb-0'> Symptoms </h5>
-                        <p> {submission?.symptoms}</p>
+                        <div className='flex'>
+                            <p className='mr-4'> {submission?.symptoms}</p>
+                            {submission?.state == "pending" && 
+                                <button className='w-40 rounded-xl bg-blue-100 text-blue-800' onClick={handleEdit}>Edit symptoms</button>
+                            }
+                        </div>
                     </div>
                     {/* prescriptions */}
                     <div className='flex flex-col w-full'>

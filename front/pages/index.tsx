@@ -6,6 +6,7 @@ import { instance } from '../api'
 import { newSubmission } from '../components/routes/routes';
 import Link from 'next/link';
 import { Pending, InProgress, Ready } from '../components/tags';
+import { useRouter } from 'next/router'
 
 export interface iSubmission {
     id: number, 
@@ -50,6 +51,7 @@ export interface iDoctorInformation {
 
 const HomePage = () => {
     const { user, isLoggedIn, token, logout, id, name } = useContext(  AuthContext );
+    const router = useRouter();
     const [filter, setFilter] = useState("");
     const [submissionsMade, setSubmissionsMade] = useState<iSubmission[]>([]);
     
@@ -104,6 +106,9 @@ const HomePage = () => {
                     </label>
                 </div>
             </div>
+            { router.query.delete == "yes" && 
+                <h4 className=' pl-16 text-green-500'> Submission deleted succesfully! </h4> 
+            }
             <div className="w-full flex justify-center">
                 <table className='table-auto border-2 h-10 border-slate-100 rounded-2xl w-11/12 '>
                     <thead>
