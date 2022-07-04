@@ -13,7 +13,7 @@ import { Table } from '../../components/Table';
 const TaskHistoryPage = () => {
     // Page of all the submissions taken by the doctor
 
-    const { user, isLoggedIn, token, logout, id, name } = useContext(  AuthContext );
+    const { user, isLoggedIn, token, logout, id, name, role } = useContext(  AuthContext );
     const [filter, setFilter] = useState("");
     const [submissionsTaken, setSubmissionsTaken] = useState<iSubmission[]>([]);
     
@@ -38,8 +38,14 @@ const TaskHistoryPage = () => {
         }
     },[isLoggedIn, filter])
 
-    if (! isLoggedIn){
-        return (<Layout/>);
+    if (! isLoggedIn || role != "doctor"){
+        return (<Layout>
+                    <div className="flex justify-center w-full pt-10">
+                        <div className=" justify-center w-11/12 bg-red-100 text-red-800">
+                            You are not authorized to access this view.
+                        </div>
+                    </div>
+                </Layout>);
     }
 
     const handleFilterChange = (event:any) => {
