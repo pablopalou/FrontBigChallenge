@@ -15,7 +15,7 @@ import {useRouter} from "next/router"
 const AllPendingPage = () => {
     // Page of all the submissions pending
 
-    const { user, isLoggedIn, token, logout, id, name } = useContext(  AuthContext );
+    const { user, isLoggedIn, token, logout, id, name, role } = useContext(  AuthContext );
     const [filter, setFilter] = useState("");
     const [submissions, setSubmissions] = useState<iSubmission[]>([]);
     const router = useRouter();
@@ -39,12 +39,18 @@ const AllPendingPage = () => {
         }
     },[isLoggedIn, filter])
 
-    if (! isLoggedIn){
-        return (<Layout/>);
+    if (! isLoggedIn || role != "doctor"){
+        return (<Layout>
+                    <div className="flex justify-center w-full pt-10">
+                        <div className=" justify-center w-11/12 bg-red-100 text-red-800">
+                            You are not authorized to access this view.
+                        </div>
+                    </div>
+                </Layout>);
     }
 
-    const handleTake = (id:string) => {
-        api.takeSubmission({id,token}).then(
+    const handleTake = (idSubmission:string) => {
+        api.takeSubmission({idSubmission,token}).then(
             (response) => {
                 console.log(response);
                 router.push(routes.allSubmissions+'?take=yes');
