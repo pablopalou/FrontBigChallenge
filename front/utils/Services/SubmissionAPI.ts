@@ -12,7 +12,13 @@ interface PropsEdit {
 }
 
 interface Props {
-    id: string,
+    idSubmission: string,
+    token: string,
+}
+
+interface PropsPrescription {
+    idSubmission: string,
+    formData: FormData,
     token: string,
 }
 
@@ -36,23 +42,33 @@ export default class SubmissionAPI {
             })
     };
 
-    takeSubmission = ({id, token}:Props) => {
+    takeSubmission = ({idSubmission, token}:Props) => {
         console.log("tokenTake",token);
-        return instance.post(`/submission/${id}/take`,{},{
+        return instance.post(`/submission/${idSubmission}/take`,{},{
             headers: {
                 'Authorization': `Bearer ${token}`
             }
             })
     };
 
-    deleteSubmission = ({id, token}:Props) => {
+    deleteSubmission = ({idSubmission, token}:Props) => {
         console.log("tokenDelete",token);
-        return instance.delete(`/submission/${id}`,{
+        return instance.delete(`/submission/${idSubmission}`,{
             headers: {
                     'Authorization': `Bearer ${token}`
             }
             })
     };
 
+    uploadPrescription = ({idSubmission, formData, token}:PropsPrescription) => {
+        console.log("Uploading file...");
+        return instance.post(`/submission/${idSubmission}/prescription`,
+            formData,{
+            headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type':'multipart/form-data'
+            }
+            })
+    };
 
 }
