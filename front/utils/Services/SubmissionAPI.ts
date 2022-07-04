@@ -71,4 +71,13 @@ export default class SubmissionAPI {
             })
     };
 
+    deletePrescription = ({idSubmission, token}:Props) => {
+        console.log("Deleting file...");
+        return instance.delete(`/submission/${idSubmission}/prescription`,{
+            headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type':'multipart/form-data'
+            }
+            })
+    };
 }

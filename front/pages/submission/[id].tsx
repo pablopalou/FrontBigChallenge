@@ -93,6 +93,19 @@ const SubmissionDetailPage:NextPage = () => {
         )
     }
 
+    const handleDeletePrescription = () => {
+        api.deletePrescription({idSubmission, token}).then(
+            (response) => {
+                console.log(response);
+                window.location.reload();
+            }
+        ).catch(
+            (error) => {
+                console.log(error);
+            }
+        )
+    }
+
     const uploadPrescription = () => {
         if (file){
             const formData = new FormData();
@@ -183,7 +196,17 @@ const SubmissionDetailPage:NextPage = () => {
                         <h5 className='mb-0'> Prescriptions </h5>
                         { submission?.prescriptions ? 
                             (<div className='bg-gray-200 py-3 flex pl-4'>
-                                <Link href={prescription} passHref><a className="text-blue-500 hover:text-blue-800"> Download your prescription</a></Link>
+                                <Link href={prescription} passHref><a className="pr-10 text-blue-500 hover:text-blue-800"> Download your prescription</a></Link>
+                                {submission?.doctor?.id == id && 
+                                    <Popup className="" trigger={<button className='w-24 h-6 rounded-xl bg-red-100 text-red-800'>Delete</button>} 
+                                        position="left center">
+                                        <div className="flex flex-col items-center">
+                                            <h5>Are you sure you want to delete this prescription? </h5>
+                                            <p>If you want to cancel, click outside the pop up</p>
+                                            <button className='w-32 h-8 rounded-xl bg-red-100 text-red-800' onClick={handleDeletePrescription}>Yes, delete</button>
+                                        </div>
+                                    </Popup>
+                                }
                             </div>) :
                             (<div className='bg-gray-200 py-3 flex pl-4 '>
                                 <img src="../icons/notavailable.svg" alt="" />
