@@ -97,9 +97,9 @@ const SubmissionDetailPage:NextPage = () => {
                     {/* div for id, status and doctor*/}
                     <div className='flex flex-col mb-4 border-b-2 pb-4'>
                         <div className='flex items-center mb-2'>
-                            <h4 className='pr-4 mb-0'>{`Submission: ${submission?.id}`}</h4>
+                            <h4 className='pr-4 mb-0 w-1/5'>{`Submission: ${submission?.id}`}</h4>
                             {/* @ts-ignore */}
-                            <div>{array[submission?.state]}</div>
+                            <div className='w-1/6'>{array[submission?.state]}</div>
                             <div className='flex w-full justify-end'>
                                 <Popup className="" trigger={<button className='w-32 h-8 rounded-xl bg-red-100 text-red-800'>Delete</button>} 
                                     position="left center">
