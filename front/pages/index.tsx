@@ -7,6 +7,7 @@ import { newSubmission } from '../components/routes/routes';
 import Link from 'next/link';
 import { Pending, InProgress, Ready } from '../components/tags';
 import { useRouter } from 'next/router'
+import { NotVerfiedEmail } from '../components/email/notVerified';
 
 export interface iSubmission {
     id: number, 
@@ -54,27 +55,24 @@ const HomePage = () => {
     const router = useRouter();
     const [filter, setFilter] = useState("");
     const [submissionsMade, setSubmissionsMade] = useState<iSubmission[]>([]);
-    const [sendMessage, setSendMessage] = useState('');
 
     const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     // i have to get all the submissions made by this patient and render them in a table
     useEffect(() => {
 
-        if (isLoggedIn){
-            // console.log(`state: ${filter}`)
-            const submissionsMade = instance.get(`/submission/?state=${filter}`, {
-            headers: {
-                    'Authorization': `Bearer ${token}`
-            }
-            }).then(
-                (response) => {
-                    // console.log("Submissions:", response.data.data);
-                    setSubmissionsMade(response.data.data)
+        if (isLoggedIn && email_verified_at){
+            instance.get(`/submission/?state=${filter}`, {
+                headers: {
+                        'Authorization': `Bearer ${token}`
                 }
-            ).catch(
-                (error) => {
-                }
-            )
+                }).then(
+                    (response) => {
+                        setSubmissionsMade(response.data.data)
+                    }
+                ).catch(
+                    (error) => {
+                    }
+                )
         }
     },[isLoggedIn, filter])
 
@@ -82,51 +80,19 @@ const HomePage = () => {
         return (<Layout/>);
     }
 
-    const resendEmail = () => {
-        console.log("resending");
-        instance.post(`/email/verification-notification`,{} ,{
-            headers: {
-                    'Authorization': `Bearer ${token}`
-            }
-            }).then(
-                (response) => {
-                    console.log(response);
-                    setSendMessage(response.data.message);
-                }
-            ).catch(
-                (error) => {
-                }
-            )
-    }
 
     if (!email_verified_at){
-        // esto en realidad deberia ser un componente asi lo puedo poner en todas las paginas sin copiar el codigo
         return (
-        <Layout>
-            <div className='w-full flex justify-center pt-10'>
-                <div className='w-11/12'>
-                    <h4>
-                        You must verify your email prior to start using this app.
-                    </h4>
-                    { sendMessage.length > 0 &&
-                    <div>
-                        <h5 className='text-green-700'> {sendMessage} </h5>
-                        <p> You must verify your email and then log in again to access all the features.</p> 
-                    </div>}
-                    <button className='bg-green-100 text-green-800 w-50 h-14 rounded-full px-4' onClick={resendEmail}> Resend email</button>
-                </div>
-            </div>
-        </Layout>);
+            <NotVerfiedEmail token={token}></NotVerfiedEmail>
+        );
     }
 
     const handleFilterChange = (event:any) => {
-        // console.log(event.target.value);
         if (event.target.value == "allSubmissions"){
             setFilter("");
         } else {
             setFilter(event.target.value);
         }
-        // console.log(filter);
     }
 
     return (

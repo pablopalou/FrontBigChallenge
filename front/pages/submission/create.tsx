@@ -11,9 +11,10 @@ import {useRouter} from "next/router"
 import { Pending, InProgress, Ready } from '../../components/tags';
 import * as routes from '../../components/routes'
 import { Loading } from '@nextui-org/react';
+import { NotVerfiedEmail } from '../../components/email/notVerified';
 
 const NewSubmissionPage:NextPage = () => {
-    const { user, isLoggedIn, token, logout, name } = useContext(  AuthContext );
+    const { user, isLoggedIn, token, logout, name, email_verified_at } = useContext(  AuthContext );
     const [symptoms, setSymptoms] = useState('');
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -43,6 +44,12 @@ const NewSubmissionPage:NextPage = () => {
 
     if (! isLoggedIn){
         return (<Layout/>);
+    }
+
+    if (!email_verified_at){
+        return (
+            <NotVerfiedEmail token={token}></NotVerfiedEmail>
+        );
     }
 
     return (
