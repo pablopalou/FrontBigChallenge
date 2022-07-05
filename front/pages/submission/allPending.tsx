@@ -11,11 +11,12 @@ import SubmissionAPI from '../../utils/Services/SubmissionAPI';
 import { Table } from '../../components/Table';
 import * as routes from '../../components/routes'
 import {useRouter} from "next/router"
+import { NotVerfiedEmail } from '../../components/email/notVerified';
 
 const AllPendingPage = () => {
     // Page of all the submissions pending
 
-    const { user, isLoggedIn, token, logout, id, name, role } = useContext(  AuthContext );
+    const { user, isLoggedIn, token, logout, id, name, role, email_verified_at } = useContext(  AuthContext );
     const [filter, setFilter] = useState("");
     const [submissions, setSubmissions] = useState<iSubmission[]>([]);
     const router = useRouter();
@@ -47,6 +48,12 @@ const AllPendingPage = () => {
                         </div>
                     </div>
                 </Layout>);
+    }
+
+    if (!email_verified_at){
+        return (
+            <NotVerfiedEmail token={token}></NotVerfiedEmail>
+        );
     }
 
     const handleTake = (idSubmission:string) => {

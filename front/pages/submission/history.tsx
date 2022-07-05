@@ -9,11 +9,12 @@ import { Pending, InProgress, Ready } from '../../components/tags';
 import { iSubmission } from '../index';
 import SubmissionAPI from '../../utils/Services/SubmissionAPI';
 import { Table } from '../../components/Table';
+import { NotVerfiedEmail } from '../../components/email/notVerified';
 
 const TaskHistoryPage = () => {
     // Page of all the submissions taken by the doctor
 
-    const { user, isLoggedIn, token, logout, id, name, role } = useContext(  AuthContext );
+    const { user, isLoggedIn, token, logout, id, name, role, email_verified_at } = useContext(  AuthContext );
     const [filter, setFilter] = useState("");
     const [submissionsTaken, setSubmissionsTaken] = useState<iSubmission[]>([]);
     
@@ -46,6 +47,12 @@ const TaskHistoryPage = () => {
                         </div>
                     </div>
                 </Layout>);
+    }
+
+    if (!email_verified_at){
+        return (
+            <NotVerfiedEmail token={token}></NotVerfiedEmail>
+        );
     }
 
     const handleFilterChange = (event:any) => {

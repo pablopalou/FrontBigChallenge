@@ -7,11 +7,12 @@ import UserAPI from '../utils/Services/UserAPI';
 import { InputForm, RegisterForm } from '../components/forms';
 import { Loading } from '@nextui-org/react';
 import * as routes from '../components/routes'
+import { NotVerfiedEmail } from '../components/email/notVerified';
 
 const specialities = [ 'Cardiology', 'Dermatology','Neurology','Pediatrics','Psychiatry','Radiation oncology', 'surgery']
 
 const EditPage = () => {
-    const { isLoggedIn, token, logout, id, role } = useContext( AuthContext );
+    const { isLoggedIn, token, logout, id, role, email_verified_at } = useContext( AuthContext );
     const router = useRouter();
 
     // const [name, setName] = useState('');
@@ -68,6 +69,12 @@ const EditPage = () => {
 
     if (! isLoggedIn){
         return (<Layout/>);
+    }
+
+    if (!email_verified_at){
+        return (
+            <NotVerfiedEmail token={token}></NotVerfiedEmail>
+        );
     }
 
     const handleUpdateInformation = () => {
