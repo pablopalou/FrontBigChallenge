@@ -9,6 +9,7 @@ interface ContextProps {
     id: number,
     name: string,
     token: string,
+    email_verified_at: string,
 }
 
 

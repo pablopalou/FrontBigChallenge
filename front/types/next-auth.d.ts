@@ -12,6 +12,7 @@ declare module "next-auth" {
             token: string,
             id: number,
             name: string,
+            email_verified_at: string,
         }
     }
 }

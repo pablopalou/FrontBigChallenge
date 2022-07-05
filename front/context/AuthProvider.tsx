@@ -13,6 +13,7 @@ export interface AuthState {
     id: number;
     name: string,
     token: string,
+    email_verified_at: string,
 }
 
 const AUTH_INITIAL_STATE: AuthState = {
@@ -22,6 +23,7 @@ const AUTH_INITIAL_STATE: AuthState = {
     id: 0,
     name: "",
     token: "",
+    email_verified_at: '',
 }
 
 interface Props {
@@ -42,6 +44,7 @@ export const AuthProvider:FC<Props> = ({ children }) => {
                 id: data?.user.id,
                 name: data?.user.name,
                 token: data?.user.token,
+                email_verified_at: data?.user.email_verified_at,
             })
         }
 
@@ -58,6 +61,7 @@ export const AuthProvider:FC<Props> = ({ children }) => {
             id: 0,
             name: "",
             token: '',
+            email_verified_at:''
         });
         // Router.push(routes.login);
     }

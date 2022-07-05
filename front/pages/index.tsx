@@ -50,11 +50,12 @@ export interface iDoctorInformation {
 }
 
 const HomePage = () => {
-    const { user, isLoggedIn, token, logout, id, name } = useContext(  AuthContext );
+    const { user, isLoggedIn, token, logout, id, name, email_verified_at } = useContext(  AuthContext );
     const router = useRouter();
     const [filter, setFilter] = useState("");
     const [submissionsMade, setSubmissionsMade] = useState<iSubmission[]>([]);
-    
+    const [sendMessage, setSendMessage] = useState('');
+
     const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     // i have to get all the submissions made by this patient and render them in a table
     useEffect(() => {
@@ -79,6 +80,43 @@ const HomePage = () => {
 
     if (! isLoggedIn){
         return (<Layout/>);
+    }
+
+    const resendEmail = () => {
+        console.log("resending");
+        instance.post(`/email/verification-notification`,{} ,{
+            headers: {
+                    'Authorization': `Bearer ${token}`
+            }
+            }).then(
+                (response) => {
+                    console.log(response);
+                    setSendMessage(response.data.message);
+                }
+            ).catch(
+                (error) => {
+                }
+            )
+    }
+
+    if (!email_verified_at){
+        // esto en realidad deberia ser un componente asi lo puedo poner en todas las paginas sin copiar el codigo
+        return (
+        <Layout>
+            <div className='w-full flex justify-center pt-10'>
+                <div className='w-11/12'>
+                    <h4>
+                        You must verify your email prior to start using this app.
+                    </h4>
+                    { sendMessage.length > 0 &&
+                    <div>
+                        <h5 className='text-green-700'> {sendMessage} </h5>
+                        <p> You must verify your email and then log in again to access all the features.</p> 
+                    </div>}
+                    <button className='bg-green-100 text-green-800 w-50 h-14 rounded-full px-4' onClick={resendEmail}> Resend email</button>
+                </div>
+            </div>
+        </Layout>);
     }
 
     const handleFilterChange = (event:any) => {
