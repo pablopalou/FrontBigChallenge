@@ -1,12 +1,12 @@
 import { Layout } from '../../components/layouts'
-import {useContext, useEffect, useState} from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../context/AuthContext';
 import { useSession } from 'next-auth/react'
 import { instance } from '../../api'
 import Link from 'next/link';
 import { iSubmission } from '../index';
 import { NextPage } from 'next';
-import {useRouter} from "next/router"
+import { useRouter } from "next/router"
 import { AnyTag } from '../../components/tags';
 import * as routes from '../../components/routes'
 import { ShowInformation } from '../../components/ShowInformation';
@@ -14,12 +14,14 @@ import { editSubmission } from '../../components/routes/routes';
 import SubmissionAPI from '../../utils/Services/SubmissionAPI';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import axios from 'axios'
+import fileDownload from 'js-file-download'
 
-const SubmissionDetailPage:NextPage = () => {
+const SubmissionDetailPage: NextPage = () => {
     const router = useRouter();
     const query = router.query;
     const idSubmission = router.query.id as string;
-    const { user, isLoggedIn, token, logout, name, id } = useContext(  AuthContext );
+    const { user, isLoggedIn, token, logout, name, id } = useContext(AuthContext);
     const [submission, setSubmission] = useState<iSubmission | undefined>();
     const [prescription, setPrescription] = useState('');
     const [file, setFile] = useState(null);
@@ -27,11 +29,11 @@ const SubmissionDetailPage:NextPage = () => {
     // i have to get all the information from the submission
     useEffect(() => {
 
-        if (isLoggedIn){
+        if (isLoggedIn) {
             instance.get(`/submission/${idSubmission}`, {
-            headers: {
+                headers: {
                     'Authorization': `Bearer ${token}`
-            }
+                }
             }).then(
                 (response) => {
                     // console.log("Submission:", response.data.data);
@@ -45,46 +47,46 @@ const SubmissionDetailPage:NextPage = () => {
             if (submission?.doctor?.id == id || submission?.patient.id == id) {
                 instance.get(`/submission/prescription/${idSubmission}`, {
                     headers: {
-                            'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`
                     }
-                    }).then(
-                        (response) => {
-                            // console.log("Prescription:", response.data.url);
-                            setPrescription(response.data.url);
-                        }
-                    ).catch(
-                        (error) => {
-                        }
-                    )
+                }).then(
+                    (response) => {
+                        // console.log("Prescription:", response.data.url);
+                        setPrescription(response.data.url);
+                    }
+                ).catch(
+                    (error) => {
+                    }
+                )
             }
-        
+
         }
 
 
-    },[isLoggedIn])
+    }, [isLoggedIn])
 
-    if (! isLoggedIn){
-        return (<Layout/>);
+    if (!isLoggedIn) {
+        return (<Layout />);
     }
 
-    const propertyGender = (gender:string|undefined) => {
-        if (gender){
+    const propertyGender = (gender: string | undefined) => {
+        if (gender) {
             return gender.charAt(0).toUpperCase() + gender.slice(1);
         }
         return "";
     }
 
     const handleEdit = () => {
-        router.push(routes.editSubmission+`/${idSubmission}`);
+        router.push(routes.editSubmission + `/${idSubmission}`);
     }
 
     const api = new SubmissionAPI();
 
     const handleDelete = () => {
-        api.deleteSubmission({idSubmission, token}).then(
+        api.deleteSubmission({ idSubmission, token }).then(
             (response) => {
                 console.log(response);
-                router.push(routes.home+'?delete=yes');
+                router.push(routes.home + '?delete=yes');
             }
         ).catch(
             (error) => {
@@ -93,7 +95,7 @@ const SubmissionDetailPage:NextPage = () => {
     }
 
     const handleDeletePrescription = () => {
-        api.deletePrescription({idSubmission, token}).then(
+        api.deletePrescription({ idSubmission, token }).then(
             (response) => {
                 console.log(response);
                 window.location.reload();
@@ -106,12 +108,12 @@ const SubmissionDetailPage:NextPage = () => {
     }
 
     const uploadPrescription = () => {
-        if (file){
+        if (file) {
             const formData = new FormData();
             formData.append('prescriptions', file);
             // console.log("file",file);
             // console.log("formdata",formData);
-            api.uploadPrescription({idSubmission, formData, token}).then(
+            api.uploadPrescription({ idSubmission, formData, token }).then(
                 (response) => {
                     // console.log(response);
                     window.location.reload();
@@ -126,8 +128,17 @@ const SubmissionDetailPage:NextPage = () => {
         // refresh
     }
 
-    const onFileChange = (event:any) => {
+    const onFileChange = (event: any) => {
         setFile(event.target.files[0]);
+    }
+
+    const handleDownload = (url: string) => {
+        axios.get(url, {
+            responseType: 'blob',
+        })
+            .then((res) => {
+                fileDownload(res.data, "prescription")
+            })
     }
 
     return (
@@ -140,9 +151,9 @@ const SubmissionDetailPage:NextPage = () => {
                         <div className='flex items-center mb-2'>
                             <h4 className='pr-4 mb-0 w-1/5'>{`Submission: ${submission?.id}`}</h4>
                             <div className='w-1/6'>{<AnyTag status={submission?.state}></AnyTag>}</div>
-                            {submission?.patient.id == id && 
+                            {submission?.patient.id == id &&
                                 <div className='flex w-full justify-end'>
-                                    <Popup className="" trigger={<button className='w-32 h-8 rounded-xl bg-red-100 text-red-800'>Delete</button>} 
+                                    <Popup className="" trigger={<button className='w-32 h-8 rounded-xl bg-red-100 text-red-800'>Delete</button>}
                                         position="left center">
                                         <div className="flex flex-col items-center">
                                             <h5>Are you sure you want to delete this submission? </h5>
@@ -152,7 +163,7 @@ const SubmissionDetailPage:NextPage = () => {
                                     </Popup>
                                 </div>
                             }
-                            {submission?.doctor?.id == id && 
+                            {submission?.doctor?.id == id &&
                                 <div className='flex w-full justify-end'>
                                     <input title="a" placeholder="" type="file" onChange={onFileChange} />
                                     <button className='w-48 h-8 rounded-xl bg-gray-100 text-gray-800' onClick={uploadPrescription}>Upload Prescription</button>
@@ -165,8 +176,8 @@ const SubmissionDetailPage:NextPage = () => {
                     {/* patient info */}
                     <div className='flex flex-col mb-4'>
                         <h5> Patient Information:</h5>
-                        <ShowInformation title1="Email" title2='Name' property1={submission?.patient.email} property2={submission?.patient.name}></ShowInformation>        
-                        <ShowInformation title1="Birth" title2='Gender' property1={submission?.patient.patientInformation.birth} property2={ propertyGender(submission?.patient.patientInformation.gender) }></ShowInformation>
+                        <ShowInformation title1="Email" title2='Name' property1={submission?.patient.email} property2={submission?.patient.name}></ShowInformation>
+                        <ShowInformation title1="Birth" title2='Gender' property1={submission?.patient.patientInformation.birth} property2={propertyGender(submission?.patient.patientInformation.gender)}></ShowInformation>
                         <ShowInformation title1="Height" title2='Weight' property1={submission?.patient.patientInformation.height} property2={submission?.patient.patientInformation.weight}></ShowInformation>
 
                         <div className=' mb-3'>
@@ -184,7 +195,7 @@ const SubmissionDetailPage:NextPage = () => {
                         <h5 className='mb-0'> Symptoms </h5>
                         <div className='flex'>
                             <p className='mr-4'> {submission?.symptoms}</p>
-                            {submission?.state == "pending" && submission?.patient.id == id && 
+                            {submission?.state == "pending" && submission?.patient.id == id &&
                                 <button className='w-40 rounded-xl bg-blue-100 text-blue-800' onClick={handleEdit}>Edit symptoms</button>
                             }
                         </div>
@@ -192,11 +203,11 @@ const SubmissionDetailPage:NextPage = () => {
                     {/* prescriptions */}
                     <div className='flex flex-col w-full'>
                         <h5 className='mb-0'> Prescriptions </h5>
-                        { submission?.prescriptions ? 
+                        {submission?.prescriptions ?
                             (<div className='bg-gray-200 py-3 flex pl-4'>
-                                <Link href={prescription} passHref><a className="pr-10 text-blue-500 hover:text-blue-800"> Download your prescription</a></Link>
-                                {submission?.doctor?.id == id && 
-                                    <Popup className="" trigger={<button className='w-24 h-6 rounded-xl bg-red-100 text-red-800'>Delete</button>} 
+                                <a onClick={() => {handleDownload(submission?.prescriptions)}} className="pr-10 text-blue-500 hover:text-blue-800"> Download your prescription</a>
+                                {submission?.doctor?.id == id &&
+                                    <Popup className="" trigger={<button className='w-24 h-6 rounded-xl bg-red-100 text-red-800'>Delete</button>}
                                         position="left center">
                                         <div className="flex flex-col items-center">
                                             <h5>Are you sure you want to delete this prescription? </h5>
