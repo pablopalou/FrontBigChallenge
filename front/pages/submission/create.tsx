@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { iSubmission } from '../index';
 import { NextPage } from 'next';
 import {useRouter} from "next/router"
-import { Pending, InProgress, Ready } from '../../components/tags';
 import * as routes from '../../components/routes'
 import { Loading } from '@nextui-org/react';
 import { NotVerfiedEmail } from '../../components/email/notVerified';

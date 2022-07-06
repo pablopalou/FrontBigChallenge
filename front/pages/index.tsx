@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { instance } from '../api'
 import { newSubmission } from '../components/routes/routes';
 import Link from 'next/link';
-import { Pending, InProgress, Ready } from '../components/tags';
+import { AnyTag } from '../components/tags';
 import { useRouter } from 'next/router'
 import { NotVerfiedEmail } from '../components/email/notVerified';
 
@@ -56,7 +56,6 @@ const HomePage = () => {
     const [filter, setFilter] = useState("");
     const [submissionsMade, setSubmissionsMade] = useState<iSubmission[]>([]);
 
-    const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     // i have to get all the submissions made by this patient and render them in a table
     useEffect(() => {
 
@@ -131,7 +130,7 @@ const HomePage = () => {
                                     <td className='pl-3'>{submission.id}</td>
                                     { submission.doctor ? <td className='pl-3'>{submission.doctor.name}</td> : <td></td>}
                                     {/* @ts-ignore */}
-                                    <td>{array[submission.state]}</td>
+                                    <td>{<AnyTag status={submission?.state}></AnyTag>}</td>
                                     <td className='pl-3'><Link href={'/submission/'+submission.id} passHref><a className="text-blue-500 hover:text-blue-800">View more</a></Link></td>
                                 </tr>);
                             }

@@ -37,7 +37,7 @@ const EditPage = () => {
     const api = new UserAPI();
 
     useEffect(() => {
-        if (isLoggedIn){
+        if (isLoggedIn && email_verified_at){
                 api.getPatientInformation({id, token}).then(
                     (response) => {
                         // console.log("user patient: ", response.data);

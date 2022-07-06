@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { instance } from '../../api'
 import { newSubmission } from '../../components/routes/routes';
 import Link from 'next/link';
-import { Pending, InProgress, Ready } from '../../components/tags';
+// import { Pending, InProgress, Ready } from '../../components/tags';
 import { iSubmission } from '../index';
 import SubmissionAPI from '../../utils/Services/SubmissionAPI';
 import { Table } from '../../components/Table';
@@ -18,13 +18,12 @@ const TaskHistoryPage = () => {
     const [filter, setFilter] = useState("");
     const [submissionsTaken, setSubmissionsTaken] = useState<iSubmission[]>([]);
     
-    const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     // i have to get all the submissions Taken by this patient and render them in a table
     
     const api = new SubmissionAPI();
 
     useEffect(() => {
-        if (isLoggedIn){
+        if (isLoggedIn && email_verified_at) {
             console.log(`state: ${filter}`);
             let all=""
             api.getSubmissions({filter,token, all}).then(

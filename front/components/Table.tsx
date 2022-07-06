@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import Link from 'next/link'
 import { NextPage } from 'next'
-import { Pending, InProgress, Ready } from './tags'
+import { AnyTag } from './tags'
 import { iSubmission } from '../pages'
 
 interface Props {
@@ -11,7 +11,6 @@ interface Props {
 }
 
 export const Table = ({submissions, column, handleTake}:Props) => {
-    const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
 
     return(
         <table className='table-auto border-2 h-10 border-slate-100 rounded-2xl w-11/12 '>
@@ -33,7 +32,7 @@ export const Table = ({submissions, column, handleTake}:Props) => {
                             <td className='pl-3'>{submission.id}</td>
                             <td className='pl-3'>{submission.patient.name}</td>
                             {/* @ts-ignore */}
-                            <td>{array[submission.state]}</td>
+                            <td>{<AnyTag status={submission?.state}></AnyTag>}</td>
                             <td className='pl-3'><Link href={'/submission/'+submission.id} passHref><a className="text-blue-500 hover:text-blue-800">View more</a></Link></td>
                             {column == "Take" && 
                                 // @ts-ignore

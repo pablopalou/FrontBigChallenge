@@ -139,7 +139,7 @@ export const RegisterForm = () => {
                 <p hidden={loading}>Sign up</p>
             </button>
             {loading && <Loading></Loading>}
-            <p>
+            <p className='pb-10'>
                 Already have an account yet?  
                 <Link href={routes.login} passHref><a className="text-blue-500 hover:text-blue-800"> Log in</a></Link>
             </p>

@@ -1,11 +1,6 @@
 import { Layout } from '../../components/layouts'
 import {useContext, useEffect, useState} from 'react'
 import { AuthContext } from '../../context/AuthContext';
-import { useSession } from 'next-auth/react'
-import { instance } from '../../api'
-import { newSubmission } from '../../components/routes/routes';
-import Link from 'next/link';
-import { Pending, InProgress, Ready } from '../../components/tags';
 import { iSubmission } from '../index';
 import SubmissionAPI from '../../utils/Services/SubmissionAPI';
 import { Table } from '../../components/Table';
@@ -20,12 +15,11 @@ const AllPendingPage = () => {
     const [filter, setFilter] = useState("");
     const [submissions, setSubmissions] = useState<iSubmission[]>([]);
     const router = useRouter();
-    const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     
     const api = new SubmissionAPI();
 
     useEffect(() => {
-        if (isLoggedIn){
+        if (isLoggedIn && email_verified_at){
             let all="yes";
             let filter="";
             api.getSubmissions({filter,token, all}).then(

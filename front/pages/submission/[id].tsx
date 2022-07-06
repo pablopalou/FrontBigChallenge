@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { iSubmission } from '../index';
 import { NextPage } from 'next';
 import {useRouter} from "next/router"
-import { Pending, InProgress, Ready } from '../../components/tags';
+import { AnyTag } from '../../components/tags';
 import * as routes from '../../components/routes'
 import { ShowInformation } from '../../components/ShowInformation';
 import { editSubmission } from '../../components/routes/routes';
@@ -24,7 +24,6 @@ const SubmissionDetailPage:NextPage = () => {
     const [prescription, setPrescription] = useState('');
     const [file, setFile] = useState(null);
 
-    const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     // i have to get all the information from the submission
     useEffect(() => {
 
@@ -141,7 +140,7 @@ const SubmissionDetailPage:NextPage = () => {
                         <div className='flex items-center mb-2'>
                             <h4 className='pr-4 mb-0 w-1/5'>{`Submission: ${submission?.id}`}</h4>
                             {/* @ts-ignore */}
-                            <div className='w-1/6'>{array[submission?.state]}</div>
+                            <div className='w-1/6'>{<AnyTag status={submission?.state}></AnyTag>}</div>
                             {submission?.patient.id == id && 
                                 <div className='flex w-full justify-end'>
                                     <Popup className="" trigger={<button className='w-32 h-8 rounded-xl bg-red-100 text-red-800'>Delete</button>} 

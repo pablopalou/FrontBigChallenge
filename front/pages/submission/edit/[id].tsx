@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { iSubmission } from '../../index';
 import { NextPage } from 'next';
 import {useRouter} from "next/router"
-import { Pending, InProgress, Ready } from '../../../components/tags';
+import { AnyTag} from '../../../components/tags';
 import * as routes from '../../../components/routes'
 import { ShowInformation } from '../../../components/ShowInformation';
 import { editSubmission } from '../../../components/routes/routes';
@@ -20,7 +20,7 @@ const SubmissionEditPage:NextPage = () => {
     const id = router.query.id as string;
     const { user, isLoggedIn, token, logout, name } = useContext(  AuthContext );
     const [submission, setSubmission] = useState<iSubmission | undefined>();
-    const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
+    // const array = {"pending": <Pending/>, 'inProgress': <InProgress/>, 'ready': <Ready/>};
     const [symptoms, setSymptoms] = useState('');
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -85,7 +85,7 @@ const SubmissionEditPage:NextPage = () => {
                         <div className='flex items-center mb-2'>
                             <h4 className='mr-4 mb-0'>Submission: {submission?.id}</h4>
                             {/* @ts-ignore */}
-                            <div>{array[submission?.state]}</div>
+                            <div>{<AnyTag status={submission?.state}></AnyTag>}</div>
                         </div>
                         {submission?.doctor ? <div>Assigned doctor: {submission?.doctor?.name}. Grade: {submission.doctor.doctorInformation.grade}. Speciality: {submission.doctor.doctorInformation.speciality}</div> : <div>A doctor will take this submission soon</div>}
                     </div>
