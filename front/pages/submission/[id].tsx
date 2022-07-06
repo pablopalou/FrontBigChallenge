@@ -139,7 +139,6 @@ const SubmissionDetailPage:NextPage = () => {
                     <div className='flex flex-col mb-4 border-b-2 pb-4'>
                         <div className='flex items-center mb-2'>
                             <h4 className='pr-4 mb-0 w-1/5'>{`Submission: ${submission?.id}`}</h4>
-                            {/* @ts-ignore */}
                             <div className='w-1/6'>{<AnyTag status={submission?.state}></AnyTag>}</div>
                             {submission?.patient.id == id && 
                                 <div className='flex w-full justify-end'>

@@ -31,12 +31,10 @@ export const Table = ({submissions, column, handleTake}:Props) => {
                         <tr key={submission.id} className="odd:bg-white even:bg-gray-50 h-10">
                             <td className='pl-3'>{submission.id}</td>
                             <td className='pl-3'>{submission.patient.name}</td>
-                            {/* @ts-ignore */}
                             <td>{<AnyTag status={submission?.state}></AnyTag>}</td>
                             <td className='pl-3'><Link href={'/submission/'+submission.id} passHref><a className="text-blue-500 hover:text-blue-800">View more</a></Link></td>
-                            {column == "Take" && 
-                                // @ts-ignore
-                                <td className='pl-3'><button className='w-32 h-8 rounded-xl bg-green-100 text-green-800' onClick={() => handleTake(submission.id)}>Take</button></td>
+                            {column == "Take" && submission && handleTake && 
+                                <td className='pl-3'><button className='w-32 h-8 rounded-xl bg-green-100 text-green-800' onClick={() => handleTake(submission.id as unknown as string)}>Take</button></td>
                             }
                         </tr>);
                     }

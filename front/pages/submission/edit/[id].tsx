@@ -84,7 +84,6 @@ const SubmissionEditPage:NextPage = () => {
                     <div className='flex flex-col mb-4 border-b-2 pb-4'>
                         <div className='flex items-center mb-2'>
                             <h4 className='mr-4 mb-0'>Submission: {submission?.id}</h4>
-                            {/* @ts-ignore */}
                             <div>{<AnyTag status={submission?.state}></AnyTag>}</div>
                         </div>
                         {submission?.doctor ? <div>Assigned doctor: {submission?.doctor?.name}. Grade: {submission.doctor.doctorInformation.grade}. Speciality: {submission.doctor.doctorInformation.speciality}</div> : <div>A doctor will take this submission soon</div>}

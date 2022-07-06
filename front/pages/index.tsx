@@ -129,7 +129,6 @@ const HomePage = () => {
                                 <tr key={submission.id} className="odd:bg-white even:bg-gray-50 h-10">
                                     <td className='pl-3'>{submission.id}</td>
                                     { submission.doctor ? <td className='pl-3'>{submission.doctor.name}</td> : <td></td>}
-                                    {/* @ts-ignore */}
                                     <td>{<AnyTag status={submission?.state}></AnyTag>}</td>
                                     <td className='pl-3'><Link href={'/submission/'+submission.id} passHref><a className="text-blue-500 hover:text-blue-800">View more</a></Link></td>
                                 </tr>);

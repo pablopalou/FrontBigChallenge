@@ -10,7 +10,6 @@ import { useSession } from 'next-auth/react'
 export const AuthSideBar = () => {
     const router = useRouter();
 
-    // @ts-ignore
     const { user, isLoggedIn, logout } = useContext(  AuthContext );
 
     const handleHome = () => {
