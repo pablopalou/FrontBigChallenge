@@ -11,14 +11,14 @@ export const NotVerfiedEmail= ({token}:Props) => {
     const [sendMessage, setSendMessage] = useState('');
 
     const resendEmail = () => {
-        console.log("resending");
+        // console.log("resending");
         instance.post(`/email/verification-notification`,{} ,{
             headers: {
                     'Authorization': `Bearer ${token}`
             }
             }).then(
                 (response) => {
-                    console.log(response);
+                    // console.log(response);
                     setSendMessage(response.data.message);
                 }
             ).catch(

@@ -25,11 +25,11 @@ const TaskHistoryPage = () => {
 
     useEffect(() => {
         if (isLoggedIn && email_verified_at) {
-            console.log(`state: ${filter}`);
+            // console.log(`state: ${filter}`);
             let all=""
             api.getSubmissions({filter,token, all}).then(
                 (response) => {
-                    console.log("Submissions:", response);
+                    // console.log("Submissions:", response);
                     setSubmissionsTaken(response.data.data)
                 }
             ).catch(

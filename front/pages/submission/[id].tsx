@@ -85,7 +85,7 @@ const SubmissionDetailPage: NextPage = () => {
     const handleDelete = () => {
         api.deleteSubmission({ idSubmission, token }).then(
             (response) => {
-                console.log(response);
+                // console.log(response);
                 router.push(routes.home + '?delete=yes');
             }
         ).catch(
@@ -97,12 +97,12 @@ const SubmissionDetailPage: NextPage = () => {
     const handleDeletePrescription = () => {
         api.deletePrescription({ idSubmission, token }).then(
             (response) => {
-                console.log(response);
+                // console.log(response);
                 window.location.reload();
             }
         ).catch(
             (error) => {
-                console.log(error);
+                // console.log(error);
             }
         )
     }

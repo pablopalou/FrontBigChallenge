@@ -25,7 +25,7 @@ const AllPendingPage = () => {
             let filter="";
             api.getSubmissions({filter,token, all}).then(
                 (response) => {
-                    console.log("Submissions:", response);
+                    // console.log("Submissions:", response);
                     setSubmissions(response.data.data)
                 }
             ).catch(
@@ -60,13 +60,13 @@ const AllPendingPage = () => {
     const handleTake = (idSubmission:string) => {
         api.takeSubmission({idSubmission,token}).then(
             (response) => {
-                console.log(response);
+                // console.log(response);
                 router.push(routes.allSubmissions+'?take=yes');
                 window.location.reload();
             }
         ).catch(
             (error) => {
-                console.log("error",error)
+                // console.log("error",error)
             }
         )
     }

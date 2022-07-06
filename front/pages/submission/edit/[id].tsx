@@ -57,7 +57,7 @@ const SubmissionEditPage:NextPage = () => {
     const handleEditSymptoms = () => {
         api.editSymptoms({id, token, symptoms}).then(
             (response) => {
-                console.log(response);
+                // console.log(response);
                 setError(false);
                 setErrorMessage('');
                 setSuccessMessage(response.data.message);
@@ -65,7 +65,7 @@ const SubmissionEditPage:NextPage = () => {
             }
         ).catch(
             (error)=> {
-                console.log("error", error);
+                // console.log("error", error);
                 setLoading(false);
                 setError(true);
                 setSuccessMessage('');

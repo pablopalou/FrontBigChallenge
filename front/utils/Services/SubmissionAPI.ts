@@ -43,7 +43,7 @@ export default class SubmissionAPI {
     };
 
     takeSubmission = ({idSubmission, token}:Props) => {
-        console.log("tokenTake",token);
+        // console.log("tokenTake",token);
         return instance.post(`/submission/${idSubmission}/take`,{},{
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -52,7 +52,7 @@ export default class SubmissionAPI {
     };
 
     deleteSubmission = ({idSubmission, token}:Props) => {
-        console.log("tokenDelete",token);
+        // console.log("tokenDelete",token);
         return instance.delete(`/submission/${idSubmission}`,{
             headers: {
                     'Authorization': `Bearer ${token}`
@@ -61,7 +61,7 @@ export default class SubmissionAPI {
     };
 
     uploadPrescription = ({idSubmission, formData, token}:PropsPrescription) => {
-        console.log("Uploading file...");
+        // console.log("Uploading file...");
         return instance.post(`/submission/${idSubmission}/prescription`,
             formData,{
             headers: {
@@ -72,7 +72,7 @@ export default class SubmissionAPI {
     };
 
     deletePrescription = ({idSubmission, token}:Props) => {
-        console.log("Deleting file...");
+        // console.log("Deleting file...");
         return instance.delete(`/submission/${idSubmission}/prescription`,{
             headers: {
                     'Authorization': `Bearer ${token}`,

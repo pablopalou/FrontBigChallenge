@@ -22,12 +22,12 @@ export default NextAuth({
                     let id = response.data.id
                     let name = response.data.name
                     let info = response.data
-                    console.log(response.data);
+                    // console.log(response.data);
                     user = {token, role, id, name, ...info}
-                    console.log(user);
+                    // console.log(user);
                 }).catch((error) => {
-                    console.log("There is an ERROR.")
-                    console.log(error);
+                    // console.log("There is an ERROR.")
+                    // console.log(error);
                 });
                 return user; 
             }
