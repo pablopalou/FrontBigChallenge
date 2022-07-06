@@ -55,11 +55,11 @@ const TaskHistoryPage = () => {
         );
     }
 
-    if (submissionsTaken.length == 0){
-        return (
-            <NotSubmissions></NotSubmissions>
-        )
-    }
+    // if (submissionsTaken.length == 0){
+    //     return (
+    //         <NotSubmissions></NotSubmissions>
+    //     )
+    // }
 
     const handleFilterChange = (event:any) => {
         if (event.target.value == "allSubmissions"){
@@ -71,6 +71,13 @@ const TaskHistoryPage = () => {
 
     return (
         <Layout>
+            <div className='ml-14 pt-4'>
+                {submissionsTaken.length == 0 && 
+                    <h4>
+                        There are no submissions to show in this section. 
+                    </h4>
+                }
+            </div>
             <div className='w-full flex mt-2 justify-end pr-5'>
                 <div className='mb-2 pl-2 pr-2 border-2 h-10 border-slate-300 rounded-lg flex justify-center items-center'>
                     <label>
