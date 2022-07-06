@@ -10,7 +10,7 @@ import { NextPage } from 'next';
 import {useRouter} from "next/router"
 import * as routes from '../../components/routes'
 import { Loading } from '@nextui-org/react';
-import { NotVerfiedEmail } from '../../components/email/notVerified';
+import { NotVerfiedEmail } from '../../components/email/NotVerified';
 
 const NewSubmissionPage:NextPage = () => {
     const { user, isLoggedIn, token, logout, name, email_verified_at } = useContext(  AuthContext );

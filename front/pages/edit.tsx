@@ -7,7 +7,7 @@ import UserAPI from '../utils/Services/UserAPI';
 import { InputForm, RegisterForm } from '../components/forms';
 import { Loading } from '@nextui-org/react';
 import * as routes from '../components/routes'
-import { NotVerfiedEmail } from '../components/email/notVerified';
+import { NotVerfiedEmail } from '../components/email/NotVerified';
 
 const specialities = [ 'Cardiology', 'Dermatology','Neurology','Pediatrics','Psychiatry','Radiation oncology', 'surgery']
 

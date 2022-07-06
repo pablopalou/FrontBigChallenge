@@ -6,7 +6,8 @@ import SubmissionAPI from '../../utils/Services/SubmissionAPI';
 import { Table } from '../../components/Table';
 import * as routes from '../../components/routes'
 import {useRouter} from "next/router"
-import { NotVerfiedEmail } from '../../components/email/notVerified';
+import { NotVerfiedEmail } from '../../components/email/NotVerified';
+import { NotSubmissions } from '../../components/submission/NotSubmissions';
 
 const AllPendingPage = () => {
     // Page of all the submissions pending
@@ -48,6 +49,12 @@ const AllPendingPage = () => {
         return (
             <NotVerfiedEmail token={token}></NotVerfiedEmail>
         );
+    }
+
+    if (submissions.length == 0){
+        return (
+            <NotSubmissions></NotSubmissions>
+        )
     }
 
     const handleTake = (idSubmission:string) => {

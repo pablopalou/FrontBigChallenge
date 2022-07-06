@@ -7,7 +7,8 @@ import { newSubmission } from '../components/routes/routes';
 import Link from 'next/link';
 import { AnyTag } from '../components/tags';
 import { useRouter } from 'next/router'
-import { NotVerfiedEmail } from '../components/email/notVerified';
+import { NotVerfiedEmail } from '../components/email/NotVerified';
+import { NotSubmissions } from '../components/submission/NotSubmissions'
 
 export interface iSubmission {
     id: number, 
@@ -86,6 +87,12 @@ const HomePage = () => {
         );
     }
 
+    if (submissionsMade.length == 0){
+        return (
+            <NotSubmissions></NotSubmissions>
+        )
+    }
+
     const handleFilterChange = (event:any) => {
         if (event.target.value == "allSubmissions"){
             setFilter("");
@@ -137,7 +144,6 @@ const HomePage = () => {
                     </tbody>
                 </table>
             </div>
-            
         </Layout>
     )
 }

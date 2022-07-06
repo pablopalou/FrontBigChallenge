@@ -9,7 +9,8 @@ import Link from 'next/link';
 import { iSubmission } from '../index';
 import SubmissionAPI from '../../utils/Services/SubmissionAPI';
 import { Table } from '../../components/Table';
-import { NotVerfiedEmail } from '../../components/email/notVerified';
+import { NotVerfiedEmail } from '../../components/email/NotVerified';
+import { NotSubmissions } from '../../components/submission/NotSubmissions';
 
 const TaskHistoryPage = () => {
     // Page of all the submissions taken by the doctor
@@ -52,6 +53,12 @@ const TaskHistoryPage = () => {
         return (
             <NotVerfiedEmail token={token}></NotVerfiedEmail>
         );
+    }
+
+    if (submissionsTaken.length == 0){
+        return (
+            <NotSubmissions></NotSubmissions>
+        )
     }
 
     const handleFilterChange = (event:any) => {

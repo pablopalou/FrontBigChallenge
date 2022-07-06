@@ -36,7 +36,7 @@ export const Table = ({submissions, column, handleTake}:Props) => {
                             {column == "Take" && submission && handleTake && 
                                 <td className='pl-3'><button className='w-32 h-8 rounded-xl bg-green-100 text-green-800' onClick={() => handleTake(submission.id as unknown as string)}>Take</button></td>
                             }
-                        </tr>);
+                    </tr>);
                     }
                 )}
             </tbody>
