@@ -41,8 +41,6 @@ const EditPage = () => {
                 api.getPatientInformation({id, token}).then(
                     (response) => {
                         // console.log("user patient: ", response.data);
-                        // setName(response.data.name);
-                        // setEmail(response.data.email);
                         setHeight(response.data.data.height);
                         setWeight(response.data.data.weight);
                         setGender(response.data.data.gender);
@@ -133,7 +131,7 @@ const EditPage = () => {
                     </div>
                     <div className='flex flex-col w-full'>
                         <label className="mb-2">Gender</label>
-                        <select className="border-2 border-slate-300 rounded-lg h-10 mb-4" title="gender" name="gender" id="gender" onChange={(event:any) => {setGender(event.target.value)}}>
+                        <select value={gender} className="border-2 border-slate-300 rounded-lg h-10 mb-4" title="gender" name="gender" id="gender" onChange={(event:any) => {setGender(event.target.value)}}>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
@@ -163,14 +161,14 @@ const EditPage = () => {
                             <label className="mb-2 w-1/2">Speciality</label>
                         </div>
                         <div className='flex flex-row w-full'>
-                            <select value={grade} className="border-2 border-slate-300 rounded-lg h-10 mb-4 w-1/2 mr-4" title="gender" name="grade" id="grade" onChange={(event:any) => {setGrade(event.target.value); }}>
+                            <select value={grade} className="border-2 border-slate-300 rounded-lg h-10 mb-4 w-1/2 mr-4" title="grade" name="grade" id="grade" onChange={(event:any) => {setGrade(event.target.value); }}>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
                             </select>
-                            <select value={speciality} className="border-2 border-slate-300 rounded-lg h-10 mb-4 w-1/2" title="gender" name="speciality" id="speciality" onChange={(event:any) => {setSpeciality(event.target.value); }}>
+                            <select value={speciality} className="border-2 border-slate-300 rounded-lg h-10 mb-4 w-1/2" title="speciality" name="speciality" id="speciality" onChange={(event:any) => {setSpeciality(event.target.value); }}>
                                 <option value="general">General</option>
                                 {specialities.map((speciality) => (
                                     <option value={speciality.split(' ').join('')} key={speciality}>{speciality}</option>
